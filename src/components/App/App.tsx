@@ -1,29 +1,44 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { FilmDataProps } from '../../types/filmDataTypes.ts';
-import { AppRoute, AuthStatus } from '../../config/config.ts';
-import { MainPage } from '../../pages/MainPage/MainPage.tsx';
-import SignIn from '../../pages/SignIn/SignIn.tsx';
-import PrivateRoute from '../PrivateRoute/PrivateRoute.tsx';
-import MyList from '../../pages/MyList/MyList.tsx';
-import Film from '../../pages/Film/Film.tsx';
-import AddReview from '../../pages/AddReview/AddReview.tsx';
-import Player from '../../pages/Player/Player.tsx';
-import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.tsx';
+import { FilmsData } from '../../types/filmData';
+import { GenresData } from '../../types/genresData';
+import { ReviewsData } from '../../types/reviewsData';
+import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import MyList from '../../pages/MyList/MyList';
+import AddReview from '../../pages/AddReview/AddReview';
+import Player from '../../pages/Player/Player';
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
+import Film from '../../pages/Film/Film';
+import { AppRoute, AuthStatus } from '../../config/config';
+import SignIn from '../../pages/SignIn/SignIn';
+import MainPage from '../../pages/MainPage/MainPage';
+import Scroll from '../Scroll/Scroll';
 
-const App = ({name, genre, promoDate}: FilmDataProps) =>
-  (
+type AppProps = {
+  filmsData: FilmsData;
+  genresData: GenresData;
+  reviewsData: ReviewsData;
+}
+
+function App ({filmsData, genresData, reviewsData}: AppProps) {
+  return (
     <BrowserRouter>
+      <Scroll />
       <Routes>
         <Route
           path={AppRoute.Main}
           element={
             <MainPage
-              name={name}
-              genre={genre}
-              promoDate={promoDate}
+              filmsData={filmsData}
+              genresData={genresData}
             />
           }
         >
+          <Route
+            path={AppRoute.Genre}
+            element={
+              <MainPage filmsData={filmsData} genresData={genresData}/>
+            }
+          />
         </Route>
         <Route
           path={AppRoute.SignIn}
@@ -33,29 +48,29 @@ const App = ({name, genre, promoDate}: FilmDataProps) =>
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authStatus={AuthStatus.NoAuth}>
-              <MyList></MyList>
+            <PrivateRoute authStatus={AuthStatus.Auth}>
+              <MyList filmsData={filmsData}></MyList>
             </PrivateRoute>
           }
         >
         </Route>
         <Route
           path={AppRoute.Film}
-          element={<Film></Film>}
+          element={<Film filmsData={filmsData} reviewsData={reviewsData}></Film>}
         >
         </Route>
         <Route
           path={AppRoute.AddReview}
           element={
-            <PrivateRoute authStatus={AuthStatus.NoAuth}>
-              <AddReview></AddReview>
+            <PrivateRoute authStatus={AuthStatus.Auth}>
+              <AddReview filmsData={filmsData}></AddReview>
             </PrivateRoute>
           }
         >
         </Route>
         <Route
           path={AppRoute.Player}
-          element={<Player></Player>}
+          element={<Player filmsData={filmsData}></Player>}
         >
         </Route>
         <Route
@@ -66,5 +81,5 @@ const App = ({name, genre, promoDate}: FilmDataProps) =>
       </Routes>
     </BrowserRouter>
   );
-
+}
 export default App;
