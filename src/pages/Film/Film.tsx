@@ -84,7 +84,6 @@ const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
             <div className="film-card__desc">
               <FilmNav film={film} activeTab={params.info}/>
               {renderTabs(params.info)}
-              {/* <Overview/> */}
             </div>
           </div>
         </div>
