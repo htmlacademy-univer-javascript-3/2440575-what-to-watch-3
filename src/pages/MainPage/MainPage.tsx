@@ -1,22 +1,30 @@
+import { FilmData, FilmsData } from '../../types/filmData.ts';
+import { GenreData, GenresData } from '../../types/genresData.ts';
 import FilmList from '../../components/FilmList/FilmList.tsx';
 import FilmPreview from '../../components/FilmPreview/FilmPreview.tsx';
 import Footer from '../../components/Footer/Footer.tsx';
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../config/config.ts';
 import { useState } from 'react';
-import { FilmData, FilmsData } from '../../types/filmData.ts';
-import { GenresData } from '../../types/genresData.ts';
 
 type MainProps = {
   filmsData: FilmsData;
   genresData: GenresData;
 }
 
+const GENRE_ITEM_ACTIVE_STYLE = 'catalog__genres-item--active';
+
 function MainPage ({filmsData, genresData}: MainProps): JSX.Element {
   const [firstFilm] = filmsData;
   const params = useParams();
   const [filmPreview, setFilmPreview] = useState(firstFilm);
 
+  const isGenreActive = (genre: string | undefined, genreData: GenreData): string => {
+    if (!genre && genresData.indexOf(genreData) === 0) {
+      return GENRE_ITEM_ACTIVE_STYLE;
+    }
+    return genre === genreData.slug ? GENRE_ITEM_ACTIVE_STYLE : '';
+  };
   const handleFilmCardClick = (film: FilmData) => {
     setFilmPreview(film);
   };
@@ -32,7 +40,7 @@ function MainPage ({filmsData, genresData}: MainProps): JSX.Element {
             {
               genresData.map((item): JSX.Element =>
                 (
-                  <li key={item.id} className={`catalog__genres-item${params.genre === item.slug ? ' catalog__genres-item--active' : ''}`}>
+                  <li key={item.id} className={`catalog__genres-item ${isGenreActive(params.genre, item)}`}>
                     <Link to={AppRoute.Main + (item.slug !== 'all' ? item.slug : '')} className="catalog__genres-link">{item.name}</Link>
                   </li>
                 )
