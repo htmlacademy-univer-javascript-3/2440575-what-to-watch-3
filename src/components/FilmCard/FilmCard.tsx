@@ -1,4 +1,4 @@
-export const FilmCard = () =>
+const FilmCard = () =>
   (
     <article className="small-film-card catalog__films-card">
       <div className="small-film-card__image">
@@ -18,3 +18,5 @@ export const FilmCard = () =>
       </h3>
     </article>
   );
+
+export default FilmCard;

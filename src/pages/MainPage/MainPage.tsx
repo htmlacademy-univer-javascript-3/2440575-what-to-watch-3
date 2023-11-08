@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { FilmDataProps } from '../../types/filmDataTypes';
-import { FilmCard } from '../../components/FilmCard/FilmCard';
+import FilmCard from '../../components/FilmCard/FilmCard';
 
 const FILMS_PER_PAGE = 20;
 const films: React.JSX.Element[] = [];
