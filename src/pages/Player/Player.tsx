@@ -1,5 +1,5 @@
 import VideoPlayer from '../../components/video-player';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoutes } from '../../types/routes.ts';
 import TimeControls from './time-controls';
@@ -25,10 +25,6 @@ export default function Player() {
     setIsPlaying(false);
   }
 
-  function handleTimeUpdate() {
-    setTime(Number(playerRef.current?.currentTime));
-  }
-
   function handleFullScreenToggle() {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -36,6 +32,10 @@ export default function Player() {
       containerRef.current?.requestFullscreen();
     }
   }
+
+  const handleTimeUpdate = useCallback(() => {
+    setTime(Number(playerRef.current?.currentTime));
+  }, []);
 
   return (
     <RequestSuspense>

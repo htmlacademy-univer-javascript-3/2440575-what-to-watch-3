@@ -1,3 +1,3 @@
-import VideoPlayer from './video-player.tsx';
+import { VideoPlayer } from './video-player.tsx';
 
 export default VideoPlayer;
