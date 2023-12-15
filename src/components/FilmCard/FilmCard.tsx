@@ -1,4 +1,4 @@
-import { FilmData } from '../../types/filmData.ts';
+import { FilmData } from '../../types';
 import { Link } from 'react-router-dom';
 import { AppRoute, FilmRoute } from '../../config/config.ts';
 import VideoPlayer from '../VideoPlayer/VideoPlayer.tsx';

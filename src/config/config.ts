@@ -31,3 +31,5 @@ export enum HeaderStyleType {
   User = 'user-page__head',
   Unset = '',
 }
+
+export const GENRE_ALL_GENRES = 'All genres';

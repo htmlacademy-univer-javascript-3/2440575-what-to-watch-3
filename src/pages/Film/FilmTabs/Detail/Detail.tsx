@@ -1,4 +1,4 @@
-import { FilmData } from '../../../../types/filmData.ts';
+import { FilmData } from '../../../../types';
 import NotFoundPage from '../../../NotFoundPage/NotFoundPage.tsx';
 
 type DetailsProps = {

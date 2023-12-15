@@ -1,4 +1,4 @@
-import { ReviewsData } from '../types/reviewsData';
+import { ReviewsData } from '../types';
 
 export const reviewsData: ReviewsData = [
   {

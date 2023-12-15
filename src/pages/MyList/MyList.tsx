@@ -2,7 +2,7 @@ import FilmList from '../../components/FilmList/FilmList.tsx';
 import Header from '../../components/Header/Header.tsx';
 import Footer from '../../components/Footer/Footer.tsx';
 import { HeaderStyleType } from '../../config/config.ts';
-import { FilmsData } from '../../types/filmData.ts';
+import { FilmsData } from '../../types';
 
 type MyListProps = {
   filmsData: FilmsData;

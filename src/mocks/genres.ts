@@ -1,4 +1,4 @@
-import { GenresData } from '../types/genresData';
+import { GenresData } from '../types';
 
 export const genresData: GenresData = [
   {

@@ -1,4 +1,4 @@
-import { FilmsData } from '../../types/filmData.ts';
+import { FilmsData } from '../../types';
 import Header from '../../components/Header/Header.tsx';
 import { Link, useParams } from 'react-router-dom';
 import NotFoundPage from '../NotFoundPage/NotFoundPage.tsx';
