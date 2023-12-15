@@ -1,6 +1,7 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { StatusCodes } from 'http-status-codes';
-import { processErrorHandle } from '../processErrorHandler/processErrorHandler';
+import { processErrorHandle } from '../processErrorHandler/processErrorHandler.tsx';
+import { getToken } from '../token/token.ts';
 
 const BACKEND_URL = 'https://13.design.pages.academy/wtw/';
 const REQUEST_TIMOUT = 5000;
@@ -22,6 +23,17 @@ export const createApi = ():AxiosInstance => {
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMOUT,
   });
+  api.interceptors.request.use(
+    (config: AxiosRequestConfig) => {
+      const token = getToken();
+
+      if (token && config.headers) {
+        config.headers['x-token'] = token;
+      }
+
+      return config;
+    },
+  );
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {

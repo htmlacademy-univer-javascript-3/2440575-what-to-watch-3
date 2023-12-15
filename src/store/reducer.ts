@@ -1,13 +1,22 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, getFilmsByGenre, loadFilmsData, setError, setFilmsDataLoadingStatus } from './action.ts';
+import {
+  changeGenre,
+  getFilmsByGenre,
+  loadFilmsData,
+  requireAuthorization,
+  setError,
+  setFilmsDataLoadingStatus,
+  setUserData
+} from './action.ts';
 import { AuthStatus, GENRE_ALL_GENRES } from '../config/config.ts';
-import { FilmsPreviewData } from '../types';
+import { FilmsPreviewData, User } from '../types';
 
 type InitialState = {
   genre: string;
   films: FilmsPreviewData;
   sortedFilms: FilmsPreviewData;
-  auth: AuthStatus;
+  authStatus: AuthStatus;
+  user: User;
   isFilmsDataLoading: boolean;
   error: string | null;
 }
@@ -16,7 +25,12 @@ const initialState: InitialState = {
   genre: 'All genres',
   films: [],
   sortedFilms: [],
-  auth: AuthStatus.Unknown,
+  authStatus: AuthStatus.Unknown,
+  user: {
+    name: '',
+    avatarUrl: '',
+    email: '',
+  },
   isFilmsDataLoading: false,
   error: null,
 };
@@ -39,6 +53,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFilmsDataLoadingStatus, (state, action) => {
       state.isFilmsDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authStatus = action.payload;
+    })
+    .addCase(setUserData, (state, action) => {
+      state.user = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

@@ -1,7 +1,7 @@
 import { FilmPreviewData } from '../../types';
 import Header from '../Header/Header.tsx';
 import { HeaderStyleType } from '../../config/config.ts';
-import ListButton from '../ListButton/ListButton.tsx';
+import { MyListBtn } from '../../components/ui';
 
 type FilmPreviewProps = {
   filmPreview: FilmPreviewData;
@@ -19,7 +19,6 @@ const FilmPreview = ({filmPreview}: FilmPreviewProps): JSX.Element => (
     <h1 className="visually-hidden">WTW</h1>
 
     <Header
-      isLoggedIn
       headerStyleType={HeaderStyleType.Film}
     />
 
@@ -59,7 +58,7 @@ const FilmPreview = ({filmPreview}: FilmPreviewProps): JSX.Element => (
               className="btn btn--list film-card__button"
               type="button"
             >
-              <ListButton isFavorite/>
+              <MyListBtn isFavorite/>
               <span>My list</span>
               <span className="film-card__count">9</span>
             </button>

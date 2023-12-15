@@ -1,48 +1,45 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { FilmsData } from '../../types/filmData';
-import { ReviewsData } from '../../types';
-import PrivateRoute from '../PrivateRoute/PrivateRoute';
-import MyList from '../../pages/MyList/MyList';
-import AddReview from '../../pages/AddReview/AddReview';
-import Player from '../../pages/Player/Player';
-import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
-import Film from '../../pages/Film/Film';
-import { AppRoute, AuthStatus } from '../../config/config';
-import SignIn from '../../pages/SignIn/SignIn';
-import MainPage from '../../pages/MainPage/MainPage';
-import Scroll from '../Scroll/Scroll';
-import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { Route, Routes } from 'react-router-dom';
+import MainPage from '../../pages/MainPage/MainPage.tsx';
+import SignIn from '../../pages/SignIn/SignIn.tsx';
+import MyList from '../../pages/MyList/MyList.tsx';
+import Film from '../../pages/Film/Film.tsx';
+import AddReview from '../../pages/AddReview/AddReview.tsx';
+import Player from '../../pages/Player/Player.tsx';
+import NotFound404 from '../../pages/NotFoundPage/NotFoundPage.tsx';
+import PrivateRoute from '../PrivateRoute/PrivateRoute.tsx';
+import Scroll from '../Scroll/Scroll.tsx';
+import { FilmsData, ReviewsData } from '../../types';
+import { AppRoute, AuthStatus } from '../../config/config.ts';
 import { useAppSelector } from '../../hooks';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen.tsx';
+import HistoryRouter from '../HistoryRouter/HistoryRouter.tsx';
+import browserHistory from '../../browserHistory.ts';
 
 type AppProps = {
   filmsData: FilmsData;
   reviewsData: ReviewsData;
 }
 
-function App ({filmsData, reviewsData}: AppProps) {
+function App({filmsData, reviewsData}: AppProps) {
   const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
+  const authStatus = useAppSelector((state) => state.authStatus);
 
-  if (isFilmsDataLoading) {
+  if (authStatus === AuthStatus.Unknown || isFilmsDataLoading) {
     return (
-      <LoadingScreen />
+      <LoadingScreen/>
     );
   }
+
   return (
-    <BrowserRouter>
-      <Scroll />
+    <HistoryRouter history={browserHistory}>
+      <Scroll/>
       <Routes>
         <Route
           path={AppRoute.Main}
           element={
-            <MainPage />
+            <MainPage/>
           }
         >
-          <Route
-            path={AppRoute.Genre}
-            element={
-              <MainPage />
-            }
-          />
         </Route>
         <Route
           path={AppRoute.SignIn}
@@ -52,21 +49,26 @@ function App ({filmsData, reviewsData}: AppProps) {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authStatus={AuthStatus.Auth}>
-              <MyList filmsData={filmsData}></MyList>
+            <PrivateRoute authStatus={authStatus}>
+              <MyList></MyList>
             </PrivateRoute>
           }
         >
         </Route>
         <Route
           path={AppRoute.Film}
-          element={<Film filmsData={filmsData} reviewsData={reviewsData}></Film>}
+          element={
+            <Film
+              filmsData={filmsData}
+              reviewsData={reviewsData}
+            />
+          }
         >
         </Route>
         <Route
           path={AppRoute.AddReview}
           element={
-            <PrivateRoute authStatus={AuthStatus.Auth}>
+            <PrivateRoute authStatus={authStatus}>
               <AddReview filmsData={filmsData}></AddReview>
             </PrivateRoute>
           }
@@ -79,11 +81,12 @@ function App ({filmsData, reviewsData}: AppProps) {
         </Route>
         <Route
           path="*"
-          element={<NotFoundPage></NotFoundPage>}
+          element={<NotFound404></NotFound404>}
         >
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
+
 export default App;
