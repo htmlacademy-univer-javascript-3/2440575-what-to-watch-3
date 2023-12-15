@@ -1,41 +1,44 @@
+import { FilmPreviewData } from '../../types';
 import Header from '../Header/Header.tsx';
 import { HeaderStyleType } from '../../config/config.ts';
 import ListButton from '../ListButton/ListButton.tsx';
-import { FilmData } from '../../types';
 
 type FilmPreviewProps = {
-  film: FilmData;
+  filmPreview: FilmPreviewData;
 }
 
-const FilmPreview = ({film}: FilmPreviewProps): JSX.Element => (
+const FilmPreview = ({filmPreview}: FilmPreviewProps): JSX.Element => (
   <section className="film-card">
     <div className="film-card__bg">
       <img
-        src={film.backgroundImage}
-        alt={film.name}
+        src={filmPreview.previewImage}
+        alt={filmPreview.name}
       />
     </div>
 
     <h1 className="visually-hidden">WTW</h1>
 
-    <Header isLoggedIn headerStyleType={HeaderStyleType.Film}/>
+    <Header
+      isLoggedIn
+      headerStyleType={HeaderStyleType.Film}
+    />
 
     <div className="film-card__wrap">
       <div className="film-card__info">
         <div className="film-card__poster">
           <img
-            src={film.posterImage}
-            alt={film.name}
+            src={filmPreview.previewImage}
+            alt={filmPreview.name}
             width="218"
             height="327"
           />
         </div>
 
         <div className="film-card__desc">
-          <h2 className="film-card__title">{film.name}</h2>
+          <h2 className="film-card__title">{filmPreview.name}</h2>
           <p className="film-card__meta">
-            <span className="film-card__genre">{film.genre}</span>
-            <span className="film-card__year">{film.released}</span>
+            <span className="film-card__genre">{filmPreview.genre}</span>
+            <span className="film-card__year">{'НЕТ ДАТЫ В PREVIEW!'}</span>
           </p>
 
           <div className="film-card__buttons">
@@ -56,7 +59,7 @@ const FilmPreview = ({film}: FilmPreviewProps): JSX.Element => (
               className="btn btn--list film-card__button"
               type="button"
             >
-              <ListButton isFavorite={film.isFavorite}/>
+              <ListButton isFavorite/>
               <span>My list</span>
               <span className="film-card__count">9</span>
             </button>
