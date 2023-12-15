@@ -7,7 +7,8 @@ import {
   loadFilms,
   loadPromoFilm,
   loadSuggestions,
-  setIsFavorite
+  setIsFavorite,
+  signOut
 } from './api-actions.ts';
 
 interface FilmSliceState {
@@ -99,6 +100,11 @@ const filmSlice = createSlice({
         favouriteFilms: action.payload,
       }
     ));
+    builder.addCase(signOut.fulfilled, (state) => ({
+      ...state,
+      favouriteFilms: [],
+      selectedFilm: state.selectedFilm ? { ...state.selectedFilm, isFavorite: false } : undefined,
+    }));
   },
 });
 
