@@ -1,7 +1,7 @@
 import Header from '../Header/Header.tsx';
 import { HeaderStyleType } from '../../config/config.ts';
 import ListButton from '../ListButton/ListButton.tsx';
-import { FilmData } from '../../types/filmData.ts';
+import { FilmData } from '../../types';
 
 type FilmPreviewProps = {
   film: FilmData;

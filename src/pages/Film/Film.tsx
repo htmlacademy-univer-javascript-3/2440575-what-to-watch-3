@@ -7,7 +7,7 @@ import Footer from '../../components/Footer/Footer.tsx';
 import { AppRoute, FilmRoute } from '../../config/config.ts';
 import { Details, Overview, Reviews } from './FilmTabs';
 import FilmNav from './FilmNav/FilmNav.tsx';
-import { ReviewsData } from '../../types/reviewsData.ts';
+import { ReviewsData } from '../../types';
 import ListButton from '../../components/ListButton/ListButton.tsx';
 
 const LIKE_THIS_CARDS = 4;

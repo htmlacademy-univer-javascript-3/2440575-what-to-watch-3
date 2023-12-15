@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../NotFoundPage/NotFoundPage.tsx';
-import { FilmsData } from '../../types/filmData.ts';
+import { FilmsData } from '../../types';
 
 type PlayerProps = {
   filmsData: FilmsData;

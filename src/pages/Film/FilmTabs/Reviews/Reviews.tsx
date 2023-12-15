@@ -1,4 +1,4 @@
-import { ReviewsData } from '../../../../types/reviewsData.ts';
+import { ReviewsData } from '../../../../types';
 import ReviewColumn from './ReviewColumn/ReviewColumn.tsx';
 
 const REVIEWS_PER_COLUMN = 3;

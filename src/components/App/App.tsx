@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { FilmsData } from '../../types/filmData';
-import { GenresData } from '../../types/genresData';
-import { ReviewsData } from '../../types/reviewsData';
+import { ReviewsData } from '../../types';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import MyList from '../../pages/MyList/MyList';
 import AddReview from '../../pages/AddReview/AddReview';
@@ -15,11 +14,10 @@ import Scroll from '../Scroll/Scroll';
 
 type AppProps = {
   filmsData: FilmsData;
-  genresData: GenresData;
   reviewsData: ReviewsData;
 }
 
-function App ({filmsData, genresData, reviewsData}: AppProps) {
+function App ({filmsData, reviewsData}: AppProps) {
   return (
     <BrowserRouter>
       <Scroll />
@@ -27,16 +25,13 @@ function App ({filmsData, genresData, reviewsData}: AppProps) {
         <Route
           path={AppRoute.Main}
           element={
-            <MainPage
-              filmsData={filmsData}
-              genresData={genresData}
-            />
+            <MainPage />
           }
         >
           <Route
             path={AppRoute.Genre}
             element={
-              <MainPage filmsData={filmsData} genresData={genresData}/>
+              <MainPage />
             }
           />
         </Route>

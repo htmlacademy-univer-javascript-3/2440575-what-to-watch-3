@@ -1,5 +1,5 @@
 import FilmCard from '../FilmCard/FilmCard.tsx';
-import { FilmData, FilmsData } from '../../types/filmData.ts';
+import { FilmData, FilmsData } from '../../types';
 
 type FilmListProps = {
   filmsData: FilmsData;

@@ -1,4 +1,4 @@
-import { ReviewsData } from '../../../../../types/reviewsData.ts';
+import { ReviewsData } from '../../../../../types';
 import Review from '../Review/Review.tsx';
 
 type ReviewColumnProps = {
