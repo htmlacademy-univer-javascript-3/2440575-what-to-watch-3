@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 
 export interface VideoPlayerProps {
   videoLink: string;
@@ -8,7 +8,7 @@ export interface VideoPlayerProps {
   autoPlay?: boolean;
 }
 
-const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>((
+const Player = forwardRef<HTMLVideoElement, VideoPlayerProps>((
   {
     videoLink,
     posterImage,
@@ -30,6 +30,6 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>((
   </video>
 ));
 
-VideoPlayer.displayName = 'VideoPlayer';
+Player.displayName = 'VideoPlayer';
 
-export default VideoPlayer;
+export const VideoPlayer = memo(Player);
