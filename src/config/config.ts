@@ -36,7 +36,7 @@ export const GENRE_ALL_GENRES = 'All genres';
 
 export const TIMEOUT_SHOW_ERROR = 2000;
 
-export enum APIRoutes {
+export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',

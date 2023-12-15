@@ -1,7 +1,7 @@
 import { FilmsData } from '../../types';
 import Header from '../../components/Header/Header.tsx';
 import { Link, useParams } from 'react-router-dom';
-import NotFoundPage from '../NotFoundPage/NotFoundPage.tsx';
+import NotFound404 from '../NotFoundPage/NotFoundPage.tsx';
 import { AppRoute, FilmRoute } from '../../config/config.ts';
 import AddReviewForm from '../../components/AddReviewForm/AddReviewForm.tsx';
 
@@ -24,7 +24,7 @@ const AddReview = ({filmsData}: ReviewProps) => {
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <Header isLoggedIn>
+        <Header>
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
@@ -46,7 +46,7 @@ const AddReview = ({filmsData}: ReviewProps) => {
 
     </section>
   ) : (
-    <NotFoundPage/>
+    <NotFound404/>
   );
 };
 export default AddReview;

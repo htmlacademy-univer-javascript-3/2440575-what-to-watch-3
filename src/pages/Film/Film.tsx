@@ -1,6 +1,6 @@
 import Header from '../../components/Header/Header.tsx';
-import { FilmsData } from '../../types/filmData.ts';
-import NotFoundPage from '../NotFoundPage/NotFoundPage.tsx';
+import { FilmsData } from '../../types';
+import NotFound404 from '../NotFoundPage/NotFoundPage.tsx';
 import { Link, useParams } from 'react-router-dom';
 import FilmList from '../../components/FilmList/FilmList.tsx';
 import Footer from '../../components/Footer/Footer.tsx';
@@ -8,7 +8,8 @@ import { AppRoute, FilmRoute } from '../../config/config.ts';
 import { Details, Overview, Reviews } from './FilmTabs';
 import FilmNav from './FilmNav/FilmNav.tsx';
 import { ReviewsData } from '../../types';
-import ListButton from '../../components/ListButton/ListButton.tsx';
+import { MyListBtn } from '../../components/ui';
+import { useAppSelector } from '../../hooks';
 
 const LIKE_THIS_CARDS = 4;
 
@@ -19,6 +20,7 @@ type FilmProps = {
 
 const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
   const params = useParams();
+  const films = useAppSelector((state) => state.films);
   const film =
     filmsData
       .find((item) => item.id === params.id);
@@ -44,7 +46,7 @@ const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <Header isLoggedIn/>
+          <Header />
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
@@ -62,7 +64,7 @@ const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
                   <span>Play</span>
                 </button>
                 <button className="btn btn--list film-card__button" type="button">
-                  <ListButton isFavorite={film.isFavorite}/>
+                  <MyListBtn isFavorite={film.isFavorite}/>
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
@@ -84,6 +86,7 @@ const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
             <div className="film-card__desc">
               <FilmNav film={film} activeTab={params.info}/>
               {renderTabs(params.info)}
+              {/*<Overview/>*/}
             </div>
           </div>
         </div>
@@ -93,14 +96,14 @@ const Film = ({filmsData, reviewsData}: FilmProps): JSX.Element => {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmList filmsData={filmsData} maxCards={LIKE_THIS_CARDS}/>
+          <FilmList filmsPreviewData={films} maxCards={LIKE_THIS_CARDS}/>
         </section>
 
         <Footer/>
       </div>
     </>
   ) : (
-    <NotFoundPage/>
+    <NotFound404/>
   );
 };
 
