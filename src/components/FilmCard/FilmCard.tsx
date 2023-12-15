@@ -1,15 +1,15 @@
-import { FilmData } from '../../types';
+import { FilmPreviewData } from '../../types';
 import { Link } from 'react-router-dom';
 import { AppRoute, FilmRoute } from '../../config/config.ts';
 import VideoPlayer from '../VideoPlayer/VideoPlayer.tsx';
 import { useEffect, useState } from 'react';
 
 type FilmCardProps = {
-  film: FilmData;
-  clickHandler: (item: FilmData) => void;
+  filmPreview: FilmPreviewData;
+  clickHandler: (item: FilmPreviewData) => void;
 }
 
-const FilmCard = ({film, clickHandler}: FilmCardProps): JSX.Element => {
+const FilmCard = ({filmPreview, clickHandler}: FilmCardProps): JSX.Element => {
   const [video, setVideo] = useState(false);
   const [isArticleHover, setArticleHover] = useState(false);
 
@@ -37,8 +37,7 @@ const FilmCard = ({film, clickHandler}: FilmCardProps): JSX.Element => {
 
   return (
     <article
-      key={film.id}
-      onClick={() => clickHandler(film)}
+      onClick={() => clickHandler(filmPreview)}
       onMouseOver={mouseOverHandler}
       onMouseOut={mouseOutHandler}
       className="small-film-card catalog__films-card"
@@ -46,11 +45,11 @@ const FilmCard = ({film, clickHandler}: FilmCardProps): JSX.Element => {
       <div className="small-film-card__image">
         {
           video ? (
-            <VideoPlayer videoLink={film.videoLink} posterImage={film.posterImage}></VideoPlayer>
+            <VideoPlayer videoLink={filmPreview.previewVideoLink} posterImage={filmPreview.previewImage}></VideoPlayer>
           ) : (
             <img
-              src={film.posterImage}
-              alt={film.name}
+              src={filmPreview.previewImage}
+              alt={filmPreview.name}
               width="280"
               height="175"
             />
@@ -61,10 +60,10 @@ const FilmCard = ({film, clickHandler}: FilmCardProps): JSX.Element => {
         !video && (
           <h3 className="small-film-card__title">
             <Link
-              to={`${AppRoute.Film.replace(':id', film.id).replace(':info', FilmRoute.Overview)}`}
+              to={`${AppRoute.Film.replace(':id', filmPreview.id).replace(':info', FilmRoute.Overview)}`}
               className="small-film-card__link"
             >
-              {film.name}
+              {filmPreview.name}
             </Link>
           </h3>
         )

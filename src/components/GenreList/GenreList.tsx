@@ -1,18 +1,18 @@
-import { FilmsData } from '../../types';
 import { GENRE_ALL_GENRES } from '../../config/config';
+import { FilmsPreviewData } from '../../types';
 import { GenreListElement } from '../ui';
 
 type GenreListProps = {
-  filmsData: FilmsData;
+  filmsPreviewData: FilmsPreviewData;
   activeGenre: string | undefined;
   clickHandler: (genre: string) => void;
 };
 
 const GENRE_ITEM_ACTIVE_STYLE = 'catalog__genres-item--active';
-const GenreList = ({filmsData, activeGenre, clickHandler}: GenreListProps) => (
+const GenreList = ({filmsPreviewData, activeGenre, clickHandler}: GenreListProps) => (
   <ul className="catalog__genres-list">
     {
-      filmsData
+      filmsPreviewData
         .reduce((acc: string[], film) => acc.includes(film.genre) ? acc : [...acc, film.genre], [GENRE_ALL_GENRES])
         .map((genre): JSX.Element => (
           <GenreListElement

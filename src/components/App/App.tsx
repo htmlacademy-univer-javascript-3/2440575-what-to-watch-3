@@ -11,6 +11,8 @@ import { AppRoute, AuthStatus } from '../../config/config';
 import SignIn from '../../pages/SignIn/SignIn';
 import MainPage from '../../pages/MainPage/MainPage';
 import Scroll from '../Scroll/Scroll';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+import { useAppSelector } from '../../hooks';
 
 type AppProps = {
   filmsData: FilmsData;
@@ -18,6 +20,13 @@ type AppProps = {
 }
 
 function App ({filmsData, reviewsData}: AppProps) {
+  const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
+
+  if (isFilmsDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <BrowserRouter>
       <Scroll />
