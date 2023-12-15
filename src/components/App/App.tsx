@@ -1,92 +1,55 @@
-import { Route, Routes } from 'react-router-dom';
-import MainPage from '../../pages/MainPage/MainPage.tsx';
-import SignIn from '../../pages/SignIn/SignIn.tsx';
-import MyList from '../../pages/MyList/MyList.tsx';
-import Film from '../../pages/Film/Film.tsx';
-import AddReview from '../../pages/AddReview/AddReview.tsx';
-import Player from '../../pages/Player/Player.tsx';
-import NotFound404 from '../../pages/NotFoundPage/NotFoundPage.tsx';
-import PrivateRoute from '../PrivateRoute/PrivateRoute.tsx';
-import Scroll from '../Scroll/Scroll.tsx';
-import { FilmsData, ReviewsData } from '../../types';
-import { AppRoute, AuthStatus } from '../../config/config.ts';
-import { useAppSelector } from '../../hooks';
-import { LoadingScreen } from '../LoadingScreen/LoadingScreen.tsx';
-import HistoryRouter from '../HistoryRouter/HistoryRouter.tsx';
-import browserHistory from '../../browserHistory.ts';
+import Main from '../../pages/main';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AppRoutes } from '../../types/routes.ts';
+import Film from '../../pages/film';
+import AddReview from '../../pages/add-review';
+import SignIn from '../../pages/sign-in';
+import Player from '../../pages/player';
+import NotFoundScreen from '../../pages/not-found-screen';
+import MyList from '../../pages/my-list';
+import PrivateRoute from '../private-route';
+import { useAppDispatch } from '../../hooks';
+import { useEffect } from 'react';
+import { loadFilms, verifyToken } from '../../store/api-actions.ts';
+import { getToken } from '../../services/storage.ts';
 
-type AppProps = {
-  filmsData: FilmsData;
-  reviewsData: ReviewsData;
-}
+const token = getToken();
 
-function App({filmsData, reviewsData}: AppProps) {
-  const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
-  const authStatus = useAppSelector((state) => state.authStatus);
+export default function App() {
+  const dispatch = useAppDispatch();
 
-  if (authStatus === AuthStatus.Unknown || isFilmsDataLoading) {
-    return (
-      <LoadingScreen/>
-    );
-  }
+  useEffect(() => {
+    dispatch(loadFilms());
+    if (token) {
+      dispatch(verifyToken());
+    }
+  }, [dispatch]);
 
   return (
-    <HistoryRouter history={browserHistory}>
-      <Scroll/>
+    <BrowserRouter>
       <Routes>
+        <Route path={AppRoutes.Main} element={<Main />} />
+        <Route path={AppRoutes.SignIn} element={<SignIn />} />
         <Route
-          path={AppRoute.Main}
+          path={AppRoutes.MyList}
           element={
-            <MainPage/>
-          }
-        >
-        </Route>
-        <Route
-          path={AppRoute.SignIn}
-          element={<SignIn></SignIn>}
-        >
-        </Route>
-        <Route
-          path={AppRoute.MyList}
-          element={
-            <PrivateRoute authStatus={authStatus}>
-              <MyList></MyList>
+            <PrivateRoute>
+              <MyList />
             </PrivateRoute>
           }
-        >
-        </Route>
+        />
+        <Route path={AppRoutes.Film} element={<Film />} />
         <Route
-          path={AppRoute.Film}
+          path={AppRoutes.AddReview}
           element={
-            <Film
-              filmsData={filmsData}
-              reviewsData={reviewsData}
-            />
-          }
-        >
-        </Route>
-        <Route
-          path={AppRoute.AddReview}
-          element={
-            <PrivateRoute authStatus={authStatus}>
-              <AddReview filmsData={filmsData}></AddReview>
+            <PrivateRoute>
+              <AddReview />
             </PrivateRoute>
           }
-        >
-        </Route>
-        <Route
-          path={AppRoute.Player}
-          element={<Player filmsData={filmsData}></Player>}
-        >
-        </Route>
-        <Route
-          path="*"
-          element={<NotFound404></NotFound404>}
-        >
-        </Route>
+        />
+        <Route path={AppRoutes.Player} element={<Player />} />
+        <Route path={AppRoutes.NotFoundScreen} element={<NotFoundScreen />} />
       </Routes>
-    </HistoryRouter>
+    </BrowserRouter>
   );
 }
-
-export default App;

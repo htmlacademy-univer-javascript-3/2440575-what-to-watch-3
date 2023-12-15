@@ -1,28 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './components/app';
 import { Provider } from 'react-redux';
-import App from './components/App/App.tsx';
-import { filmsData } from './mocks/films.ts';
-import { reviewsData } from './mocks/reviews.ts';
+import { ToastContainer } from 'react-toastify';
 import { store } from './store';
-import ErrorMessage from './components/ErrorMessage/ErrorMessage.tsx';
-import { fetchFilmsAction, checkAuthAction } from './store/apiActions.ts';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-store.dispatch(checkAuthAction());
-store.dispatch(fetchFilmsAction());
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ErrorMessage/>
-      <App
-        filmsData={filmsData}
-        reviewsData={reviewsData}
-      />
+      <ToastContainer />
+      <App />
     </Provider>
   </React.StrictMode>
 );

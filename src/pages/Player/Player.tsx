@@ -1,53 +1,90 @@
-import { useParams } from 'react-router-dom';
-import NotFoundPage from '../NotFoundPage/NotFoundPage.tsx';
-import { FilmsData } from '../../types';
+import VideoPlayer from '../../components/video-player';
+import { useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppRoutes } from '../../types/routes.ts';
+import TimeControls from './time-controls';
+import { useSelectedFilm } from '../../hooks/useSelectedFilm.ts';
+import RequestSuspense from '../../components/request-suspense';
 
-type PlayerProps = {
-  filmsData: FilmsData;
-}
+export default function Player() {
+  const playerRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(0);
+  const navigate = useNavigate();
+  const { id = '' } = useParams();
+  const { selectedFilm } = useSelectedFilm({});
 
-const Player = ({filmsData}: PlayerProps): JSX.Element => {
-  const params = useParams();
-  const film =
-    filmsData
-      .find((item) => item.id === params.id);
+  function handlePlay() {
+    playerRef.current?.play();
+    setIsPlaying(true);
+  }
 
-  return film ? (
-    <div className="player">
-      <video src={film.videoLink} className="player__video" poster={film.backgroundImage}></video>
+  function handlePause() {
+    playerRef.current?.pause();
+    setIsPlaying(false);
+  }
 
-      <button type="button" className="player__exit">Exit</button>
+  function handleTimeUpdate() {
+    setTime(Number(playerRef.current?.currentTime));
+  }
 
-      <div className="player__controls">
-        <div className="player__controls-row">
-          <div className="player__time">
-            <progress className="player__progress" value="30" max="100"></progress>
-            <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
-          </div>
-          <div className="player__time-value">1:30:29</div>
-        </div>
+  function handleFullScreenToggle() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      containerRef.current?.requestFullscreen();
+    }
+  }
 
-        <div className="player__controls-row">
-          <button type="button" className="player__play">
-            <svg viewBox="0 0 19 19" width="19" height="19">
-              <use xlinkHref="#play-s"></use>
-            </svg>
-            <span>Play</span>
-          </button>
-          <div className="player__name">Transpotting</div>
-
-          <button type="button" className="player__full-screen">
-            <svg viewBox="0 0 27 27" width="27" height="27">
-              <use xlinkHref="#full-screen"></use>
-            </svg>
-            <span>Full screen</span>
-          </button>
-        </div>
+  return (
+    <RequestSuspense>
+      <div className="player" ref={containerRef}>
+        {selectedFilm && (
+          <>
+            <VideoPlayer
+              videoLink={selectedFilm.videoLink}
+              posterImage={selectedFilm.posterImage}
+              ref={playerRef}
+              onTimeUpdate={handleTimeUpdate}
+            />
+            <button
+              type="button"
+              className="player__exit"
+              onClick={() => navigate(AppRoutes.Film.replace(':id', id))}
+            >
+              Exit
+            </button>
+            <div className="player__controls">
+              {playerRef.current && <TimeControls time={time} duration={Number(playerRef.current?.duration)} />}
+              <div className="player__controls-row">
+                {isPlaying ? (
+                  <button type="button" className="player__play" onClick={handlePause}>
+                    <svg viewBox="0 0 14 21" width="14" height="21">
+                      <use xlinkHref="#pause"></use>
+                    </svg>
+                    <span>Pause</span>
+                  </button>
+                ) : (
+                  <button type="button" className="player__play" onClick={handlePlay}>
+                    <svg viewBox="0 0 19 19" width="19" height="19">
+                      <use xlinkHref="#play-s"></use>
+                    </svg>
+                    <span>Play</span>
+                  </button>
+                )}
+                <div className="player__name">{selectedFilm.name}</div>
+                <button type="button" className="player__full-screen" onClick={handleFullScreenToggle}>
+                  <svg viewBox="0 0 27 27" width="27" height="27">
+                    <use xlinkHref="#full-screen"></use>
+                  </svg>
+                  <span>Full screen</span>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-    </div>
-  ) : (
-    <NotFoundPage/>
+    </RequestSuspense>
   );
-};
-
-export default Player;
+}
