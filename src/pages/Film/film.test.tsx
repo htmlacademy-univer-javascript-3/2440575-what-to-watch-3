@@ -11,6 +11,7 @@ import {
 } from '../../store/api-actions.ts';
 import { AuthorizationStatus } from '../../types/user.ts';
 import Film from './index.tsx';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: Film', () => {
   const mockedFilteredFilms = mockFilmArray();
@@ -32,9 +33,9 @@ describe('Component: Film', () => {
         reviews: mockedReviews,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(200, mockedFilteredFilms);
-    mockAxiosAdapter.onGet(/\/comments/).reply(200, mockedReviews);
-    mockAxiosAdapter.onGet(/\/films/).reply(200);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedFilteredFilms);
+    mockAxiosAdapter.onGet(/\/comments/).reply(StatusCodes.OK, mockedReviews);
+    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK);
     render(component);
     expect(screen.getByAltText(mockedFilteredFilms[0].name)).toBeInTheDocument();
     expect(screen.getByText(mockedFilteredFilms[0].name)).toBeInTheDocument();

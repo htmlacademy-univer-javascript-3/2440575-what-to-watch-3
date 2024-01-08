@@ -6,6 +6,7 @@ import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 import { loadFavoriteFilms, loadPromoFilm } from '../../store/api-actions.ts';
 import { AuthorizationStatus } from '../../types/user.ts';
 import Main from './main.tsx';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: Main', () => {
   const mockedFilteredFilms = mockFilmArray();
@@ -28,8 +29,8 @@ describe('Component: Main', () => {
         favoriteFilms: mockedFilteredFilms,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(200, mockedFilteredFilms);
-    mockAxiosAdapter.onGet(/\/promo/).reply(200, mockedFilteredFilms[0]);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedFilteredFilms);
+    mockAxiosAdapter.onGet(/\/promo/).reply(StatusCodes.OK, mockedFilteredFilms[0]);
     render(component);
     expect(screen.getByAltText(mockedFilteredFilms[0].name)).toBeInTheDocument();
     expect(screen.getByText(mockedFilteredFilms[0].name)).toBeInTheDocument();

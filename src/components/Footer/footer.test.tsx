@@ -6,11 +6,11 @@ import { AppRoutes } from '../../types/routes.ts';
 
 describe('Component: Footer', () => {
   it('should render correctly', async () => {
-    const { component, history } = withProviders(<Footer />);
+    const { component, mockHistory } = withProviders(<Footer />);
     render(component);
     const link = screen.getByRole('link', {name: /w t w/i});
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(history.location.pathname).toBe(AppRoutes.Main);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Main);
   });
 });

@@ -3,7 +3,7 @@ import { mockReviewArray } from '../utils/mock-data.ts';
 import { loadReviews } from './api-actions.ts';
 
 describe('Slice: Review', () => {
-  const mockedReviewArray = mockReviewArray();
+  const mockReviews = mockReviewArray();
 
   it('should return initial state with empty action', () => {
     const emptyAction = { type: '' };
@@ -18,8 +18,8 @@ describe('Slice: Review', () => {
   });
 
   it('should store reviews with "loadReviews" action', () => {
-    const expectedState = { ...initialState, reviews: mockedReviewArray };
-    const result = reviewSliceReducer(initialState, {type: loadReviews.fulfilled.type, payload: mockedReviewArray});
+    const expectedState = { ...initialState, reviews: mockReviews };
+    const result = reviewSliceReducer(initialState, {type: loadReviews.fulfilled.type, payload: mockReviews});
     expect(result).toEqual(expectedState);
   });
 });

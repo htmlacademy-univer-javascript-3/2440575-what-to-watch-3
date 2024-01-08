@@ -6,6 +6,7 @@ import { mockFilmArray, mockUserDetails } from '../../utils/mock-data.ts';
 import { AuthorizationStatus } from '../../types/user.ts';
 import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 import { loadFavoriteFilms } from '../../store/api-actions.ts';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: MyList', () => {
   const mockedfavoriteFilms = mockFilmArray();
@@ -21,7 +22,7 @@ describe('Component: MyList', () => {
         favoriteFilms: mockedfavoriteFilms,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(200, mockedfavoriteFilms);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedfavoriteFilms);
     render(component);
     expect(screen.getByText(/my list/i)).toBeInTheDocument();
     expect(screen.getByText(mockedfavoriteFilms.length)).toBeInTheDocument();

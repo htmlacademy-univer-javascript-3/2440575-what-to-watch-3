@@ -9,24 +9,24 @@ describe('Component: Breadcrumbs', () => {
   const {id, name} = mockFilmDetails();
 
   it('should redirect to film details page on link click', async () => {
-    const { component, history } = withProviders(
+    const { component, mockHistory } = withProviders(
       <Breadcrumbs id={id} name={name} />
     );
     render(component);
     const link = screen.getByRole('link', { name });
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(history.location.pathname).toBe(AppRoutes.Film.replace(':id', id));
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Film.replace(':id', id));
   });
 
   it('should redirect to add review-block page on link click', async () => {
-    const { component, history } = withProviders(
+    const { component, mockHistory } = withProviders(
       <Breadcrumbs id={id} name={name} />
     );
     render(component);
     const link = screen.getByRole('link', { name: /add review/i });
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(history.location.pathname).toBe(AppRoutes.AddReview.replace(':id', id));
+    expect(mockHistory.location.pathname).toBe(AppRoutes.AddReview.replace(':id', id));
   });
 });

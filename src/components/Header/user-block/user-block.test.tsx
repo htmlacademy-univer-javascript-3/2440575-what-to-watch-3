@@ -8,12 +8,13 @@ import { AuthorizationStatus } from '../../../types/user.ts';
 import { extractActionsTypes } from '../../../utils/mock-reducer.ts';
 import { signOut } from '../../../store/api-actions.ts';
 import { expect } from 'vitest';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: UserBlock', () => {
   const mockedUserDetails = mockUserDetails();
 
   it('should display sign in link for guests', async () => {
-    const { component, history } = withProviders(<UserBlock />,
+    const { component, mockHistory } = withProviders(<UserBlock />,
       {
         user: {
           ...mockedUserDetails,
@@ -24,7 +25,7 @@ describe('Component: UserBlock', () => {
     const link = screen.getByRole('link', { name: /sign in/i });
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(history.location.pathname).toBe(AppRoutes.SignIn);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.SignIn);
   });
 
   it('should display sign out button for authorized users', async () => {
@@ -35,7 +36,7 @@ describe('Component: UserBlock', () => {
           authorizationStatus: AuthorizationStatus.Authorized,
         }
       });
-    mockAxiosAdapter.onDelete(/\/logout/).reply(200);
+    mockAxiosAdapter.onDelete(/\/logout/).reply(StatusCodes.OK);
     render(component);
 
     const signOutElement = screen.getByText(/sign out/i);
@@ -50,7 +51,7 @@ describe('Component: UserBlock', () => {
   });
 
   it('should display avatar for authorized users', async () => {
-    const { component, history } = withProviders(<UserBlock />,
+    const { component, mockHistory } = withProviders(<UserBlock />,
       {
         user: {
           ...mockedUserDetails,
@@ -62,6 +63,6 @@ describe('Component: UserBlock', () => {
     const avatar = screen.getByRole('img');
     expect(avatar).toBeInTheDocument();
     await userEvent.click(avatar);
-    expect(history.location.pathname).toBe(AppRoutes.MyList);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.MyList);
   });
 });

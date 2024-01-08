@@ -8,6 +8,7 @@ import { loadFavoriteFilms, setIsFavorite } from '../../../store/api-actions.ts'
 import { extractActionsTypes } from '../../../utils/mock-reducer.ts';
 import { AppRoutes } from '../../../types/routes.ts';
 import * as faker from 'faker';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: MyListButton', () => {
   const mockedListLength = faker.datatype.number();
@@ -47,8 +48,8 @@ describe('Component: MyListButton', () => {
             authorizationStatus: AuthorizationStatus.Authorized,
           },
         });
-    mockAxiosAdapter.onPost(/\/favorite/).reply(200);
-    mockAxiosAdapter.onGet(/\/favorite/).reply(200);
+    mockAxiosAdapter.onPost(/\/favorite/).reply(StatusCodes.OK);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK);
 
     render(component);
     await userEvent.click(screen.getByRole('button'));
@@ -63,7 +64,7 @@ describe('Component: MyListButton', () => {
   });
 
   it('should redirect to login page when guest clicks on the button', async () => {
-    const { component, mockStore, history } = withProviders(<MyListButton listLength={mockedListLength} />, {
+    const { component, mockStore, mockHistory } = withProviders(<MyListButton listLength={mockedListLength} />, {
       film: {
         selectedFilm: {
           ...mockedFilmDetails,
@@ -79,7 +80,7 @@ describe('Component: MyListButton', () => {
     render(component);
     await userEvent.click(screen.getByRole('button'));
     const actions = extractActionsTypes(mockStore.getActions());
-    expect(history.location.pathname).toBe(AppRoutes.SignIn);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.SignIn);
     expect(actions).toEqual([]);
   });
 });

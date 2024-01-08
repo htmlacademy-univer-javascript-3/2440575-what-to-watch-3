@@ -30,11 +30,11 @@ describe('Async actions', () => {
   const mockAxiosAdapter = new MockAdapter(axios);
   const middleware = [thunk.withExtraArgument(axios)];
   const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
-  const mockedUserCredentials = mockUserCredentials();
-  const mockedUserDetails = mockUserDetails();
-  const mockedFilmArray = mockFilmArray();
-  const mockedReviewArray = mockReviewArray();
-  const mockedToken = mockToken();
+  const mockUserAuthData = mockUserCredentials();
+  const mockUser = mockUserDetails();
+  const mockFilmList = mockFilmArray();
+  const mockReviews = mockReviewArray();
+  const mockAuthToken = mockToken();
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {
@@ -47,16 +47,16 @@ describe('Async actions', () => {
   });
 
   it('should dispatch "signIn.pending" and "signIn.fulfilled" with thunk "signIn', async () => {
-    mockAxiosAdapter.onPost(/\/login/).replyOnce(200, { token: mockedToken });
+    mockAxiosAdapter.onPost(/\/login/).replyOnce(200, { token: mockAuthToken });
     const mockSaveToken = vi.spyOn(tokenStorage, 'saveToken');
-    await store.dispatch(signIn(mockedUserCredentials));
+    await store.dispatch(signIn(mockUserAuthData));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
     const signInActionFulfilled = emittedActions.at(1) as ReturnType<typeof signIn.fulfilled>;
 
 
     expect(mockSaveToken).toBeCalledTimes(1);
-    expect(mockSaveToken).toHaveBeenLastCalledWith(mockedToken);
+    expect(mockSaveToken).toHaveBeenLastCalledWith(mockAuthToken);
 
     expect(extractedActionsTypes).toEqual([
       signIn.pending.type,
@@ -64,11 +64,11 @@ describe('Async actions', () => {
     ]);
 
     expect(signInActionFulfilled.payload)
-      .toEqual({ token: mockedToken });
+      .toEqual({ token: mockAuthToken });
   });
 
   it('should dispatch "loadFilms.pending" and "loadFilms.fulfilled" with thunk "loadFilms', async () => {
-    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockedFilmArray);
+    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockFilmList);
     await store.dispatch(loadFilms());
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
@@ -80,11 +80,11 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray);
+      .toEqual(mockFilmList);
   });
 
   it('should dispatch "loadPromoFilm.pending" and "loadPromoFilm.fulfilled" with thunk "loadPromoFilm', async () => {
-    mockAxiosAdapter.onGet(/\/promo/).replyOnce(200, mockedFilmArray[0]);
+    mockAxiosAdapter.onGet(/\/promo/).replyOnce(200, mockFilmList[0]);
     await store.dispatch(loadPromoFilm());
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
@@ -96,12 +96,12 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray[0]);
+      .toEqual(mockFilmList[0]);
   });
 
   it('should dispatch "loadFilmDetails.pending" and "loadFilmDetails.fulfilled" with thunk "loadFilmDetails', async () => {
-    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockedFilmArray[0]);
-    await store.dispatch(loadFilmDetails(mockedFilmArray[0].id));
+    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockFilmList[0]);
+    await store.dispatch(loadFilmDetails(mockFilmList[0].id));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
     const actionFulfilled = emittedActions.at(1) as ReturnType<typeof loadFilmDetails.fulfilled>;
@@ -112,12 +112,12 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray[0]);
+      .toEqual(mockFilmList[0]);
   });
 
   it('should dispatch "loadSuggestions.pending" and "loadSuggestions.fulfilled" with thunk "loadSuggestions', async () => {
-    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockedFilmArray);
-    await store.dispatch(loadSuggestions(mockedFilmArray[0].id));
+    mockAxiosAdapter.onGet(/\/films/).replyOnce(200, mockFilmList);
+    await store.dispatch(loadSuggestions(mockFilmList[0].id));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
     const actionFulfilled = emittedActions.at(1) as ReturnType<typeof loadSuggestions.fulfilled>;
@@ -128,12 +128,12 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray);
+      .toEqual(mockFilmList);
   });
 
   it('should dispatch "loadReviews.pending" and "loadReviews.fulfilled" with thunk "loadReviews', async () => {
-    mockAxiosAdapter.onGet(/\/comments/).replyOnce(200, mockedReviewArray);
-    await store.dispatch(loadReviews(mockedFilmArray[0].id));
+    mockAxiosAdapter.onGet(/\/comments/).replyOnce(200, mockReviews);
+    await store.dispatch(loadReviews(mockFilmList[0].id));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
     const actionFulfilled = emittedActions.at(1) as ReturnType<typeof loadReviews.fulfilled>;
@@ -144,11 +144,11 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedReviewArray);
+      .toEqual(mockReviews);
   });
 
   it('should dispatch "verifyToken.pending" and "verifyToken.fulfilled" with thunk "verifyToken', async () => {
-    mockAxiosAdapter.onGet(/\/login/).replyOnce(200, mockedUserDetails);
+    mockAxiosAdapter.onGet(/\/login/).replyOnce(200, mockUser);
     await store.dispatch(verifyToken());
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
@@ -160,7 +160,7 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedUserDetails);
+      .toEqual(mockUser);
   });
 
   it('should dispatch "verifyToken.pending" and "verifyToken.rejected" when server response 400', async () => {
@@ -196,7 +196,7 @@ describe('Async actions', () => {
   });
 
   it('should dispatch "loadFavoriteFilms.pending" and "loadFavoriteFilms.fulfilled" with thunk "loadFavoriteFilms', async () => {
-    mockAxiosAdapter.onGet(/\/favorite/).replyOnce(200, mockedFilmArray);
+    mockAxiosAdapter.onGet(/\/favorite/).replyOnce(200, mockFilmList);
     await store.dispatch(loadFavoriteFilms());
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
@@ -208,7 +208,7 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray);
+      .toEqual(mockFilmList);
   });
 
   it('should dispatch "clearRequestCount.pending" and "clearRequestCount.fulfilled" with thunk "clearRequestCount', async () => {
@@ -224,7 +224,7 @@ describe('Async actions', () => {
 
   it('should dispatch "addReview.pending" and "addReview.fulfilled" with thunk "addReview', async () => {
     mockAxiosAdapter.onPost(/\/comments/).replyOnce(200);
-    await store.dispatch(addReview({filmId: mockedFilmArray[0].id, ...mockedReviewArray[0]}));
+    await store.dispatch(addReview({filmId: mockFilmList[0].id, ...mockReviews[0]}));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
 
@@ -235,8 +235,8 @@ describe('Async actions', () => {
   });
 
   it('should dispatch "setIsFavorite.pending" and "setIsFavorite.fulfilled" with thunk "setIsFavorite', async () => {
-    mockAxiosAdapter.onPost(/\/favorite/).replyOnce(200, mockedFilmArray[0]);
-    await store.dispatch(setIsFavorite({filmId: mockedFilmArray[0].id, status: Number(mockedFilmArray[0].isFavorite)}));
+    mockAxiosAdapter.onPost(/\/favorite/).replyOnce(200, mockFilmList[0]);
+    await store.dispatch(setIsFavorite({filmId: mockFilmList[0].id, status: Number(mockFilmList[0].isFavorite)}));
     const emittedActions = store.getActions();
     const extractedActionsTypes = extractActionsTypes(emittedActions);
     const actionFulfilled = emittedActions.at(1) as ReturnType<typeof setIsFavorite.fulfilled>;
@@ -247,6 +247,6 @@ describe('Async actions', () => {
     ]);
 
     expect(actionFulfilled.payload)
-      .toEqual(mockedFilmArray[0]);
+      .toEqual(mockFilmList[0]);
   });
 });
