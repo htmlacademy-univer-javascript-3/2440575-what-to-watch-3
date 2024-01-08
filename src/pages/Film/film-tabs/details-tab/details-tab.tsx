@@ -20,9 +20,9 @@ export default function DetailsTab({
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
             {starring.map((value) => (
-              <div key={value} className="film-card__details-value_field_starring">
+              <span key={value} className="film-card__details-value_field_starring">
                 {value}
-              </div>
+              </span>
             ))}
           </span>
         </p>

@@ -1,9 +1,6 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { FormEvent, useState } from 'react';
+import { useAppDispatch } from '../../../hooks';
 import { signIn } from '../../../store/api-actions.ts';
-import { useNavigate } from 'react-router-dom';
-import { AppRoutes } from '../../../types/routes.ts';
-import { AuthorizationStatus } from '../../../types/user.ts';
 
 interface FormFields {
   email: string;
@@ -18,8 +15,6 @@ const INITIAL_FORM_STATE: FormFields = {
 export default function SignInForm() {
   const [formValues, setFormValues] = useState<FormFields>(INITIAL_FORM_STATE);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { authorizationStatus } = useAppSelector((state) => state.user);
 
   function handleFormChange(updatedValues: Partial<FormFields>) {
     setFormValues((values) => ({ ...values, ...updatedValues }));
@@ -29,12 +24,6 @@ export default function SignInForm() {
     event.preventDefault();
     dispatch(signIn(formValues));
   }
-
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Authorized) {
-      navigate(AppRoutes.Main);
-    }
-  }, [authorizationStatus, navigate]);
 
   return (
     <form onSubmit={handleSubmit} className="sign-in__form">

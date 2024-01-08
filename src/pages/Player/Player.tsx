@@ -1,10 +1,21 @@
 import VideoPlayer from '../../components/video-player';
 import { useCallback, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../types/routes.ts';
 import TimeControls from './time-controls';
 import { useSelectedFilm } from '../../hooks/useSelectedFilm.ts';
 import RequestSuspense from '../../components/request-suspense';
+
+interface CrossBrowserDocument {
+  exitFullscreen?: () => void;
+  mozCancelFullScreen?: () => void;
+  webkitExitFullscreen?: () => void;
+  msExitFullscreen?: () => void;
+  fullscreenElement?: Element | null;
+  mozFullScreenElement?: Element | null;
+  webkitFullscreenElement?: Element | null;
+  msFullscreenElement?: Element | null;
+}
 
 export default function Player() {
   const playerRef = useRef<HTMLVideoElement>(null);
@@ -12,7 +23,6 @@ export default function Player() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const navigate = useNavigate();
-  const { id = '' } = useParams();
   const { selectedFilm } = useSelectedFilm({});
 
   function handlePlay() {
@@ -25,11 +35,32 @@ export default function Player() {
     setIsPlaying(false);
   }
 
+  function exitFullScreen(): void {
+    const crossBrowserDocument = document as unknown as CrossBrowserDocument;
+    if (crossBrowserDocument.exitFullscreen) {
+      crossBrowserDocument.exitFullscreen();
+    } else if (crossBrowserDocument.mozCancelFullScreen) {
+      crossBrowserDocument.mozCancelFullScreen();
+    } else if (crossBrowserDocument.webkitExitFullscreen) {
+      crossBrowserDocument.webkitExitFullscreen();
+    } else if (crossBrowserDocument.msExitFullscreen) {
+      crossBrowserDocument.msExitFullscreen();
+    }
+  }
+
+  function isFullscreen(): Element | null | undefined {
+    const crossBrowserDocument = document as unknown as CrossBrowserDocument;
+    return crossBrowserDocument.fullscreenElement ||
+      crossBrowserDocument.mozFullScreenElement ||
+      crossBrowserDocument.webkitFullscreenElement ||
+      crossBrowserDocument.msFullscreenElement;
+  }
+
   function handleFullScreenToggle() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
+    if (isFullscreen()) {
+      exitFullScreen();
     } else {
-      containerRef.current?.requestFullscreen();
+      containerRef.current?.requestFullscreen?.();
     }
   }
 
@@ -51,7 +82,7 @@ export default function Player() {
             <button
               type="button"
               className="player__exit"
-              onClick={() => navigate(AppRoutes.Film.replace(':id', id))}
+              onClick={() => navigate(AppRoutes.Film.replace(':id', selectedFilm.id))}
             >
               Exit
             </button>

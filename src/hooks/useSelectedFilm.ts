@@ -14,7 +14,7 @@ interface UseSelectedFilmParams {
 export function useSelectedFilm({ shouldLoadSuggestions = false, shouldLoadReviews = false }: UseSelectedFilmParams) {
   const { id = '' } = useParams();
   const { selectedFilm, suggestionPortion } = useAppSelector((state) => state.film);
-  const { reviews } = useAppSelector((state) => state.reviews);
+  const { reviews } = useAppSelector((state) => state.review);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

@@ -1,5 +1,5 @@
 import Main from '../../pages/main';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoutes } from '../../types/routes.ts';
 import Film from '../../pages/film';
 import AddReview from '../../pages/add-review';
@@ -26,30 +26,28 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={AppRoutes.Main} element={<Main />} />
-        <Route path={AppRoutes.SignIn} element={<SignIn />} />
-        <Route
-          path={AppRoutes.MyList}
-          element={
-            <PrivateRoute>
-              <MyList />
-            </PrivateRoute>
-          }
-        />
-        <Route path={AppRoutes.Film} element={<Film />} />
-        <Route
-          path={AppRoutes.AddReview}
-          element={
-            <PrivateRoute>
-              <AddReview />
-            </PrivateRoute>
-          }
-        />
-        <Route path={AppRoutes.Player} element={<Player />} />
-        <Route path={AppRoutes.NotFoundScreen} element={<NotFoundScreen />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path={AppRoutes.Main} element={<Main />} />
+      <Route path={AppRoutes.SignIn} element={<SignIn />} />
+      <Route
+        path={AppRoutes.MyList}
+        element={
+          <PrivateRoute>
+            <MyList />
+          </PrivateRoute>
+        }
+      />
+      <Route path={AppRoutes.Film} element={<Film />} />
+      <Route
+        path={AppRoutes.AddReview}
+        element={
+          <PrivateRoute>
+            <AddReview />
+          </PrivateRoute>
+        }
+      />
+      <Route path={AppRoutes.Player} element={<Player />} />
+      <Route path={AppRoutes.NotFoundScreen} element={<NotFoundScreen />} />
+    </Routes>
   );
 }
