@@ -10,7 +10,7 @@ describe('Component: AddReviewLink', () => {
   const mockedFilmId = faker.datatype.uuid();
 
   it('should redirect to add review-block page for authorized users', async () => {
-    const { component, history } = withProviders(<AddReviewLink id={mockedFilmId} />, {
+    const { component, mockHistory } = withProviders(<AddReviewLink id={mockedFilmId} />, {
       user: {
         authorizationStatus: AuthorizationStatus.Authorized,
       },
@@ -20,7 +20,7 @@ describe('Component: AddReviewLink', () => {
     const link = screen.getByRole('link', {name: /add review/i});
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(history.location.pathname).toBe(AppRoutes.AddReview.replace(':id', mockedFilmId));
+    expect(mockHistory.location.pathname).toBe(AppRoutes.AddReview.replace(':id', mockedFilmId));
   });
 
   it('should not render link for guests', () => {

@@ -4,9 +4,10 @@ import { withProviders } from '../../utils/mock-component.tsx';
 import { mockFilmDetails } from '../../utils/mock-data.ts';
 import userEvent from '@testing-library/user-event';
 import { AppRoutes } from '../../types/routes.ts';
-import { afterAll, beforeAll, expect, SpyInstance, vitest } from 'vitest';
+import { afterAll, beforeAll, expect, SpyInstance } from 'vitest';
 import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 import { loadFilmDetails } from '../../store/api-actions.ts';
+import { StatusCodes } from 'http-status-codes';
 
 describe('Component: Player', () => {
   const mockedSelectedFilm = mockFilmDetails();
@@ -14,17 +15,17 @@ describe('Component: Player', () => {
   let playStub: SpyInstance<[], Promise<void>>;
 
   beforeAll(() => {
-    pauseStub = vitest
+    pauseStub = vi
       .spyOn(window.HTMLMediaElement.prototype, 'pause')
       .mockImplementation(() => undefined);
 
-    playStub = vitest
+    playStub = vi
       .spyOn(window.HTMLMediaElement.prototype, 'play')
       .mockImplementation(async () => new Promise(() => undefined));
   });
 
   afterAll(() => {
-    vitest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render correctly and load data', async () => {
@@ -33,7 +34,7 @@ describe('Component: Player', () => {
         selectedFilm: mockedSelectedFilm,
       }
     });
-    mockAxiosAdapter.onGet(/\/films/).reply(200, mockedSelectedFilm);
+    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK, mockedSelectedFilm);
     render(component);
     expect(screen.getByTestId('video-player')).toBeInTheDocument();
     expect(screen.getByText(mockedSelectedFilm.name)).toBeInTheDocument();
@@ -44,14 +45,15 @@ describe('Component: Player', () => {
   });
 
   it('should redirect to the film page on exit button click', async () => {
-    const { component, history } = withProviders(<Player />, {
+    const { component, mockHistory, mockAxiosAdapter } = withProviders(<Player />, {
       film: {
         selectedFilm: mockedSelectedFilm,
       }
     });
+    mockAxiosAdapter.onGet(/\/film/).reply(StatusCodes.OK, mockedSelectedFilm);
     render(component);
     await userEvent.click(screen.getByRole('button', { name: /exit/i }));
-    expect(history.location.pathname).toBe(AppRoutes.Film.replace(':id', mockedSelectedFilm.id));
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Film.replace(':id', mockedSelectedFilm.id));
   });
 
   it('should display play and pause buttons', async () => {

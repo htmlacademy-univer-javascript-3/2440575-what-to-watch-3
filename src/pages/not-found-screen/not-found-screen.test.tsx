@@ -9,11 +9,11 @@ import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 
 describe('Component: SignInForm', () => {
   it('should render correctly and display redirect link', async () => {
-    const {component, history, mockStore} = withProviders(<NotFoundScreen />);
+    const {component, mockHistory, mockStore} = withProviders(<NotFoundScreen />);
     render(component);
     expect(screen.getByText(/ошибка 404\. страница не найдена/i)).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', {name: /вернуться на главную страницу/i}));
-    expect(history.location.pathname).toBe(AppRoutes.Main);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Main);
     const actions = extractActionsTypes(mockStore.getActions());
     expect(actions).toEqual([
       clearRequestCount.pending.type,

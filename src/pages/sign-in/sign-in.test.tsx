@@ -12,12 +12,12 @@ describe('Component: SignIn', () => {
   });
 
   it('should redirect to the main page when user is unauthorized', () => {
-    const {component, history} = withProviders(<SignIn />, {
+    const {component, mockHistory} = withProviders(<SignIn />, {
       user: {
         authorizationStatus: AuthorizationStatus.Authorized
       }
     });
     render(component);
-    expect(history.location.pathname).toBe(AppRoutes.Main);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Main);
   });
 });

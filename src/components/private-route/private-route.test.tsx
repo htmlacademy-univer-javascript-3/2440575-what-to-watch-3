@@ -22,7 +22,7 @@ describe('Component: PrivateRoute', () => {
   });
 
   it('should redirect to sign in page when the user is unauthorized', () => {
-    const { component, history } = withProviders(
+    const { component, mockHistory } = withProviders(
       <PrivateRoute>
         <span>Example Child</span>
       </PrivateRoute>,
@@ -33,7 +33,7 @@ describe('Component: PrivateRoute', () => {
       }
     );
     render(component);
-    expect(history.location.pathname).toBe(AppRoutes.SignIn);
+    expect(mockHistory.location.pathname).toBe(AppRoutes.SignIn);
     expect(screen.queryByText(/example child/i)).not.toBeInTheDocument();
   });
 });
