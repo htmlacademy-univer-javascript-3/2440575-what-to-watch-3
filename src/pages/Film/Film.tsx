@@ -4,8 +4,8 @@ import FilmList from '../../components/film-list';
 import FilmControls from '../../components/film-controls';
 import FilmTabs from './film-tabs';
 import RequestSuspense from '../../components/request-suspense';
-import { useSelectedFilm } from '../../hooks/useSelectedFilm.ts';
-import { useFavoriteFilms } from '../../hooks/useFavoriteFilms.ts';
+import { useSelectedFilm } from '../../hooks/use-selected-film.ts';
+import { useFavoriteFilms } from '../../hooks/use-favorite-films.ts';
 
 export default function Film() {
   const { selectedFilm, suggestionPortion, reviews } = useSelectedFilm({

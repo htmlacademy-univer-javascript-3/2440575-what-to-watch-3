@@ -9,23 +9,23 @@ import { loadFavoriteFilms } from '../../store/api-actions.ts';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: MyList', () => {
-  const mockedfavoriteFilms = mockFilmArray();
-  const mockedUserDetails = mockUserDetails();
+  const mockFavoriteFilms = mockFilmArray();
+  const mockUserData = mockUserDetails();
 
   it('should render correctly', async () => {
     const { component, mockAxiosAdapter, mockStore } = withProviders(<MyList />, {
       user: {
-        ...mockedUserDetails,
+        ...mockUserData,
         authorizationStatus: AuthorizationStatus.Authorized,
       },
       film: {
-        favoriteFilms: mockedfavoriteFilms,
+        favoriteFilms: mockFavoriteFilms,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedfavoriteFilms);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockFavoriteFilms);
     render(component);
     expect(screen.getByText(/my list/i)).toBeInTheDocument();
-    expect(screen.getByText(mockedfavoriteFilms.length)).toBeInTheDocument();
+    expect(screen.getByText(mockFavoriteFilms.length)).toBeInTheDocument();
     expect(screen.getByText(/catalog/i)).toBeInTheDocument();
     await waitFor(() => expect(extractActionsTypes(mockStore.getActions())).toEqual([
       loadFavoriteFilms.pending.type,

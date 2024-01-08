@@ -1,9 +1,17 @@
-export function formatPlayerTime(seconds: number): string {
-  return new Date(seconds * 1000).toISOString().slice(11, 19);
+import dayjs from 'dayjs';
+import { DateFormats } from '../types/date.ts';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+
+export function formatPlayerTime(time: number, duration: number): string {
+  const secondsLeft = duration - time;
+  const isLongerThanHour = secondsLeft >= 3600;
+  return dayjs.utc(secondsLeft * 1000, 'ss').format(isLongerThanHour ? '-HH:mm:ss' : '-mm:ss');
 }
 
-export function formatDate(date: Date, options: Intl.DateTimeFormatOptions, locale = 'en-US'): string {
-  return new Intl.DateTimeFormat(locale, options).format(date);
+export function formatDate(date: string, format: DateFormats): string {
+  return dayjs(date).format(format);
 }
 
 export function formatRunTime(minutes: number): string {

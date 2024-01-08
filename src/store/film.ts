@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ALL_GENRES, FILM_LIST_PORTION_SIZE, SUGGESTION_PORTION_SIZE } from '../constants/film.ts';
-import { FilmDetails, FilmPreview } from '../types/film.ts';
+import { ALL_GENRES } from '../constants/film.ts';
+import { FilmDetails, PortionSizes, FilmPreview } from '../types/film.ts';
 import {
   loadFavoriteFilms,
   loadFilmDetails,
@@ -33,7 +33,7 @@ export const initialState: FilmSliceState = {
   filmListPortion: [],
   genres: [ALL_GENRES],
   selectedGenre: ALL_GENRES,
-  filmListLength: FILM_LIST_PORTION_SIZE,
+  filmListLength: PortionSizes.FilmList,
 };
 
 function setSelectedFilm(state: FilmSliceState, action: PayloadAction<FilmDetails>) {
@@ -55,13 +55,13 @@ const filmSlice = createSlice({
           ...state,
           selectedGenre: action.payload,
           filteredFilms,
-          filmListLength: FILM_LIST_PORTION_SIZE,
-          filmListPortion: filteredFilms.slice(0, FILM_LIST_PORTION_SIZE)
+          filmListLength: PortionSizes.FilmList,
+          filmListPortion: filteredFilms.slice(0, PortionSizes.FilmList)
         }
       );
     },
     showMoreFilms: (state) => {
-      const newLength = state.filmListLength + FILM_LIST_PORTION_SIZE;
+      const newLength = state.filmListLength + PortionSizes.FilmList;
 
       return (
         {
@@ -77,11 +77,11 @@ const filmSlice = createSlice({
       {
         ...state,
         selectedGenre: ALL_GENRES,
-        filmListLength: FILM_LIST_PORTION_SIZE,
-        genres: [ALL_GENRES, ...new Set(action.payload.map(({ genre }) => genre))],
+        filmListLength: PortionSizes.FilmList,
+        genres: [ALL_GENRES, ...new Set(action.payload.map(({ genre }) => genre))].slice(0, PortionSizes.Genres),
         films: action.payload,
         filteredFilms: action.payload,
-        filmListPortion: action.payload.slice(0, FILM_LIST_PORTION_SIZE),
+        filmListPortion: action.payload.slice(0, PortionSizes.FilmList),
       }
     ));
     builder.addCase(loadPromoFilm.fulfilled, setSelectedFilm);
@@ -91,7 +91,7 @@ const filmSlice = createSlice({
       {
         ...state,
         suggestions: action.payload,
-        suggestionPortion: action.payload.slice(0, SUGGESTION_PORTION_SIZE),
+        suggestionPortion: action.payload.slice(0, PortionSizes.Suggestions),
       }
     ));
     builder.addCase(loadFavoriteFilms.fulfilled, (state, action: PayloadAction<FilmPreview[]>) => (

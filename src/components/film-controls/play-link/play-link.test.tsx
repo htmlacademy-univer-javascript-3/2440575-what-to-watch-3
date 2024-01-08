@@ -7,10 +7,10 @@ import userEvent from '@testing-library/user-event';
 import { AppRoutes } from '../../../types/routes.ts';
 
 describe('Component: PlayLink', () => {
-  const mockedFilmId = faker.datatype.uuid();
+  const mockFilmId = faker.datatype.uuid();
 
   it('should redirect to video player page', async () => {
-    const { component, mockHistory } = withProviders(<AddReviewLink id={mockedFilmId} />, {
+    const { component, mockHistory } = withProviders(<AddReviewLink id={mockFilmId} />, {
       user: {
         authorizationStatus: AuthorizationStatus.Authorized,
       },
@@ -20,6 +20,6 @@ describe('Component: PlayLink', () => {
     const link = screen.getByRole('link', {name: /play/i});
     expect(link).toBeInTheDocument();
     await userEvent.click(link);
-    expect(mockHistory.location.pathname).toBe(AppRoutes.Player.replace(':id', mockedFilmId));
+    expect(mockHistory.location.pathname).toBe(AppRoutes.Player.replace(':id', mockFilmId));
   });
 });

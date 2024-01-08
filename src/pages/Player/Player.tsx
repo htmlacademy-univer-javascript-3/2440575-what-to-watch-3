@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../types/routes.ts';
 import TimeControls from './time-controls';
-import { useSelectedFilm } from '../../hooks/useSelectedFilm.ts';
+import { useSelectedFilm } from '../../hooks/use-selected-film.ts';
 import RequestSuspense from '../../components/request-suspense';
 
 interface CrossBrowserDocument {
@@ -17,9 +17,15 @@ interface CrossBrowserDocument {
   msFullscreenElement?: Element | null;
 }
 
+interface CrossBrowserElement extends HTMLDivElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+  mozRequestFullscreen?: () => Promise<void>;
+}
+
 export default function Player() {
   const playerRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<CrossBrowserElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const navigate = useNavigate();
@@ -33,6 +39,13 @@ export default function Player() {
   function handlePause() {
     playerRef.current?.pause();
     setIsPlaying(false);
+  }
+
+  function enterFullScreen(): void {
+    containerRef.current?.requestFullscreen?.();
+    containerRef.current?.mozRequestFullscreen?.();
+    containerRef.current?.webkitRequestFullscreen?.();
+    containerRef.current?.msRequestFullscreen?.();
   }
 
   function exitFullScreen(): void {
@@ -60,7 +73,7 @@ export default function Player() {
     if (isFullscreen()) {
       exitFullScreen();
     } else {
-      containerRef.current?.requestFullscreen?.();
+      enterFullScreen();
     }
   }
 

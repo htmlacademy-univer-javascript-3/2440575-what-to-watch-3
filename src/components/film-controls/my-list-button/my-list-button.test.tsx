@@ -11,17 +11,17 @@ import * as faker from 'faker';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: MyListButton', () => {
-  const mockedListLength = faker.datatype.number();
-  const mockedFilmDetails = mockFilmDetails();
-  const mockedUserDetails = mockUserDetails();
+  const mockListLength = faker.datatype.number();
+  const mockFilmData = mockFilmDetails();
+  const mockUserData = mockUserDetails();
 
   it('should render correctly', () => {
-    const { component } = withProviders(<MyListButton listLength={mockedListLength} />, {
+    const { component } = withProviders(<MyListButton listLength={mockListLength} />, {
       film: {
-        selectedFilm: mockedFilmDetails
+        selectedFilm: mockFilmData
       },
       user: {
-        ...mockedUserDetails,
+        ...mockUserData,
         authorizationStatus: AuthorizationStatus.Authorized,
       },
     });
@@ -29,22 +29,22 @@ describe('Component: MyListButton', () => {
     render(component);
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByText('My list')).toBeInTheDocument();
-    expect(screen.getByText(mockedListLength)).toBeInTheDocument();
+    expect(screen.getByText(mockListLength)).toBeInTheDocument();
   });
 
   it('should change favorite film list when authorized user clicks on the button', async () => {
     const { component, mockStore, mockAxiosAdapter } =
       withProviders(
-        <MyListButton listLength={mockedListLength} />,
+        <MyListButton listLength={mockListLength} />,
         {
           film: {
             selectedFilm: {
-              ...mockedFilmDetails,
+              ...mockFilmData,
               isFavorite: true,
             }
           },
           user: {
-            ...mockedUserDetails,
+            ...mockUserData,
             authorizationStatus: AuthorizationStatus.Authorized,
           },
         });
@@ -64,15 +64,15 @@ describe('Component: MyListButton', () => {
   });
 
   it('should redirect to login page when guest clicks on the button', async () => {
-    const { component, mockStore, mockHistory } = withProviders(<MyListButton listLength={mockedListLength} />, {
+    const { component, mockStore, mockHistory } = withProviders(<MyListButton listLength={mockListLength} />, {
       film: {
         selectedFilm: {
-          ...mockedFilmDetails,
+          ...mockFilmData,
           isFavorite: false,
         }
       },
       user: {
-        ...mockedUserDetails,
+        ...mockUserData,
         authorizationStatus: AuthorizationStatus.Unauthorized,
       },
     });

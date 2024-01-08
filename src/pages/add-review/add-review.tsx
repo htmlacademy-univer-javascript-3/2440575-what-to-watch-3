@@ -1,6 +1,6 @@
 import Header from '../../components/header';
 import AddReviewForm from './add-review-form';
-import { useSelectedFilm } from '../../hooks/useSelectedFilm.ts';
+import { useSelectedFilm } from '../../hooks/use-selected-film.ts';
 import RequestSuspense from '../../components/request-suspense';
 
 export default function AddReview() {

@@ -34,3 +34,9 @@ export enum RatingDescription {
   VeryGood = 'Very good',
   Awesome = 'Awesome',
 }
+
+export enum PortionSizes {
+  FilmList = 8,
+  Suggestions = 4,
+  Genres = 10,
+}

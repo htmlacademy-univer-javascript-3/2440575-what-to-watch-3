@@ -14,7 +14,7 @@ describe('Component: RequestSuspense', () => {
   });
 
   it('should render spinner when any request is pending', () => {
-    const mockedRequestCount = 1;
+    const mockRequestCount = 1;
 
     const { component } = withProviders(
       <RequestSuspense>
@@ -22,7 +22,7 @@ describe('Component: RequestSuspense', () => {
       </RequestSuspense>,
       {
         app: {
-          pendingRequestsCount: mockedRequestCount
+          pendingRequestsCount: mockRequestCount
         }
       }
     );

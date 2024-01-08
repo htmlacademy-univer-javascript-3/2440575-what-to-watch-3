@@ -1,60 +1,91 @@
-import { FormEvent, useState } from 'react';
 import { useAppDispatch } from '../../../hooks';
 import { signIn } from '../../../store/api-actions.ts';
+import { Controller, useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 interface FormFields {
-  email: string;
-  password: string;
+  'user-email': string;
+  'user-password': string;
 }
 
 const INITIAL_FORM_STATE: FormFields = {
-  email: '',
-  password: '',
+  'user-email': '',
+  'user-password': '',
 };
 
 export default function SignInForm() {
-  const [formValues, setFormValues] = useState<FormFields>(INITIAL_FORM_STATE);
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid }
+  } = useForm<FormFields>({
+    defaultValues: INITIAL_FORM_STATE,
+    mode: 'all',
+  });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  function handleFormChange(updatedValues: Partial<FormFields>) {
-    setFormValues((values) => ({ ...values, ...updatedValues }));
-  }
-
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    dispatch(signIn(formValues));
+  function handleSignIn(data: FormFields) {
+    setIsSubmitting(true);
+    dispatch(signIn({ email: data['user-email'], password: data['user-password'] }))
+      .unwrap()
+      .finally(() => setIsSubmitting(false));
   }
 
   return (
-    <form onSubmit={handleSubmit} className="sign-in__form">
+    <form onSubmit={(event) => void handleSubmit(handleSignIn)(event)} className="sign-in__form">
       <div className="sign-in__fields">
         <div className="sign-in__field">
-          <input
-            className="sign-in__input"
-            type="email"
-            placeholder="Email address"
+          <Controller
             name="user-email"
-            id="user-email"
-            value={formValues.email}
-            onChange={(event) => handleFormChange({ email: event.target.value })}
+            control={control}
+            disabled={isSubmitting}
+            rules={{
+              required: true,
+              pattern: {
+                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: 'Email must be valid',
+              },
+            }}
+            render={({ field }) => (
+              <input
+                className="sign-in__input"
+                placeholder="Email address"
+                id="user-email"
+                {...field}
+                type="email"
+              />
+            )}
           />
           <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
         </div>
         <div className="sign-in__field">
-          <input
-            className="sign-in__input"
-            type="password"
-            placeholder="Password"
+          <Controller
             name="user-password"
-            id="user-password"
-            value={formValues.password}
-            onChange={(event) => handleFormChange({ password: event.target.value })}
+            control={control}
+            disabled={isSubmitting}
+            rules={{
+              required: true,
+              pattern: {
+                value: /^(?=.*\d)(?=.*[a-zA-Z]).*$/,
+                message: 'Password must contain at least 1 number and 1 letter',
+              },
+            }}
+            render={({ field }) => (
+              <input
+                className="sign-in__input"
+                placeholder="Password"
+                id="user-password"
+                {...field}
+                type="password"
+              />
+            )}
           />
           <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
         </div>
       </div>
       <div className="sign-in__submit">
-        <button className="sign-in__btn" type="submit">Sign in</button>
+        <button className="sign-in__btn" type="submit" disabled={!isValid || isSubmitting}>Sign in</button>
       </div>
     </form>
   );

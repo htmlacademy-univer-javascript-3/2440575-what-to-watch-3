@@ -5,10 +5,10 @@ import FilmCard from './index.tsx';
 import { mockFilmDetails } from '../../utils/mock-data.ts';
 
 describe('Component: FilmCard', () => {
-  const mockedFilmDetails = mockFilmDetails();
+  const mockFilmData = mockFilmDetails();
 
   it('should display video on hover and image by default', async () => {
-    const { component } = withProviders(<FilmCard {...mockedFilmDetails} />);
+    const { component } = withProviders(<FilmCard {...mockFilmData} />);
     render(component);
     const article = screen.getByRole('article');
     expect(article).toBeInTheDocument();
