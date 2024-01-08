@@ -1,3 +1,7 @@
+.film-card__details-value_field_starring {
+  display: block;
+}
+
 .film-card__details-value_field_starring:not(:last-child):after {
   content: ',';
 }

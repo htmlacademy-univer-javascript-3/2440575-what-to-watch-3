@@ -25,6 +25,7 @@ const Player = forwardRef<HTMLVideoElement, VideoPlayerProps>((
     onTimeUpdate={onTimeUpdate}
     muted={muted}
     autoPlay={autoPlay}
+    data-testid="video-player"
   >
     <source src={videoLink} />
   </video>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ALL_GENRES, FILM_LIST_PORTION_SIZE, SUGGESTION_PORTION_SIZE } from '../constants/film.ts';
 import { FilmDetails, FilmPreview } from '../types/film.ts';
 import {
-  loadFavouriteFilms,
+  loadFavoriteFilms,
   loadFilmDetails,
   loadFilms,
   loadPromoFilm,
@@ -13,7 +13,7 @@ import {
 
 interface FilmSliceState {
   suggestions: FilmPreview[];
-  favouriteFilms: FilmPreview[];
+  favoriteFilms: FilmPreview[];
   suggestionPortion: FilmPreview[];
   selectedFilm?: FilmDetails;
   films: FilmPreview[];
@@ -24,8 +24,8 @@ interface FilmSliceState {
   filmListLength: number;
 }
 
-const initialState: FilmSliceState = {
-  favouriteFilms: [],
+export const initialState: FilmSliceState = {
+  favoriteFilms: [],
   suggestions: [],
   suggestionPortion: [],
   films: [],
@@ -94,15 +94,15 @@ const filmSlice = createSlice({
         suggestionPortion: action.payload.slice(0, SUGGESTION_PORTION_SIZE),
       }
     ));
-    builder.addCase(loadFavouriteFilms.fulfilled, (state, action: PayloadAction<FilmPreview[]>) => (
+    builder.addCase(loadFavoriteFilms.fulfilled, (state, action: PayloadAction<FilmPreview[]>) => (
       {
         ...state,
-        favouriteFilms: action.payload,
+        favoriteFilms: action.payload,
       }
     ));
     builder.addCase(signOut.fulfilled, (state) => ({
       ...state,
-      favouriteFilms: [],
+      favoriteFilms: [],
       selectedFilm: state.selectedFilm ? { ...state.selectedFilm, isFavorite: false } : undefined,
     }));
   },

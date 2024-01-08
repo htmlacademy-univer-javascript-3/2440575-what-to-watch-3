@@ -9,7 +9,7 @@ interface UserSliceState extends UserData {
 
 const token = getToken();
 
-const initialState: UserSliceState = {
+export const initialState: UserSliceState = {
   authorizationStatus: token ? AuthorizationStatus.Unknown : AuthorizationStatus.Unauthorized,
   name: '',
   avatarUrl: '',

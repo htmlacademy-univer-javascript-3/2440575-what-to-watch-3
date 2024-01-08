@@ -24,7 +24,7 @@ git push
 ¹ В `academy` должна быть ссылка на репозиторий Академии. Если его там нет, добавьте:
 
 ```
-git remote add academy git@github.com:htmlacademy-univer-javascript-3/2440575-what-to-watch-3.git
+git remote add academy git@github.com:htmlacademy-univer-javascript-3/1166983-what-to-watch-2.git
 ```
 
 Когда вы обновили `master`, создайте ветку для нового задания:

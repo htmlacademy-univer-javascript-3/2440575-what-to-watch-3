@@ -1,5 +1,5 @@
 import { Review } from '../../../../types/review.ts';
-import ReviewBlock from './review';
+import ReviewBlock from './review-block';
 
 interface ReviewTabProps {
   reviews: Review[];

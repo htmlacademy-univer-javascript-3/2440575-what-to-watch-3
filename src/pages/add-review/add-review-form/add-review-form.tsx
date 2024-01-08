@@ -3,10 +3,10 @@ import { ReviewFormValues } from '../../../types/review.ts';
 import { addReview } from '../../../store/api-actions.ts';
 import { useAppDispatch } from '../../../hooks';
 import { useNavigate, useParams } from 'react-router-dom';
-import { REVIEW_FIELDS_LIMITATIONS } from '../../../constants/review.ts';
+import { RATING_OPTIONS_COUNT, REVIEW_FIELDS_LIMITATIONS } from '../../../constants/review.ts';
 import { AppRoutes } from '../../../types/routes.ts';
 
-const RATING_OPTIONS = Array.from({ length: 10 }, (_, i) => i + 1).reverse();
+const RATING_OPTIONS = Array.from({ length: RATING_OPTIONS_COUNT }, (_, i) => i + 1).reverse();
 
 const INITIAL_FORM_STATE: ReviewFormValues = {
   rating: 0,
