@@ -9,7 +9,8 @@ import {
   setIsFavorite,
   signOut
 } from './api-actions.ts';
-import { ALL_GENRES, FILM_LIST_PORTION_SIZE, SUGGESTION_PORTION_SIZE } from '../constants/film.ts';
+import { ALL_GENRES } from '../constants/film.ts';
+import { PortionSizes } from '../types/film.ts';
 
 describe('Slice: Film', () => {
   const mockFilmList = mockFilmArray();
@@ -42,7 +43,7 @@ describe('Slice: Film', () => {
   });
 
   it('should increase filtered list length with "showMoreFilms" action', () => {
-    const expectedState = { ...initialState, filmListLength: initialState.filmListLength + FILM_LIST_PORTION_SIZE };
+    const expectedState = { ...initialState, filmListLength: initialState.filmListLength + PortionSizes.FilmList };
     const result = filmSliceReducer(initialState, showMoreFilms());
     expect(result).toEqual(expectedState);
   });
@@ -50,10 +51,10 @@ describe('Slice: Film', () => {
   it('should store film list with "loadFilms" action', () => {
     const expectedState = {
       ...initialState,
-      genres: mockGenres,
+      genres: mockGenres.slice(0, PortionSizes.Genres),
       films: mockFilmList,
       filteredFilms: mockFilmList,
-      filmListPortion: mockFilmList.slice(0, FILM_LIST_PORTION_SIZE)
+      filmListPortion: mockFilmList.slice(0, PortionSizes.FilmList)
     };
     const result = filmSliceReducer(initialState, { type: loadFilms.fulfilled.type, payload: mockFilmList });
     expect(result).toEqual(expectedState);
@@ -99,7 +100,7 @@ describe('Slice: Film', () => {
     const expectedState = {
       ...initialState,
       suggestions: mockFilmList,
-      suggestionPortion: mockFilmList.slice(0, SUGGESTION_PORTION_SIZE)
+      suggestionPortion: mockFilmList.slice(0, PortionSizes.Suggestions)
     };
     const result = filmSliceReducer(initialState, { type: loadSuggestions.fulfilled.type, payload: mockFilmList });
     expect(result).toEqual(expectedState);

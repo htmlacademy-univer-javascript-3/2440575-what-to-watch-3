@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncActionConfig } from '../types/state.ts';
 import { FilmDetails, FilmPreview } from '../types/film.ts';
-import { Review, ReviewFormValues } from '../types/review.ts';
+import { Review, ReviewValues } from '../types/review.ts';
 import { UserCredentials, UserData } from '../types/user.ts';
 import { dropToken, saveToken } from '../services/storage.ts';
 
@@ -75,9 +75,9 @@ export const clearRequestCount = createAsyncThunk<void, undefined, AsyncActionCo
   () => undefined,
 );
 
-export const addReview = createAsyncThunk<void, ReviewFormValues & { filmId: string }, AsyncActionConfig>(
+export const addReview = createAsyncThunk<void, ReviewValues & { filmId: string }, AsyncActionConfig>(
   'review/addReview',
-  async ({ filmId, ...requestData }: ReviewFormValues & { filmId: string }, { extra: api }) =>
+  async ({ filmId, ...requestData }: ReviewValues & { filmId: string }, { extra: api }) =>
     await api.post(`/comments/${filmId}`, requestData)
 );
 

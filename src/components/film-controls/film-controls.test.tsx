@@ -4,12 +4,12 @@ import FilmControls from './index.tsx';
 import { withProviders } from '../../utils/mock-component.tsx';
 
 describe('Component: FilmControls', () => {
-  const mockedFilmId = faker.datatype.uuid();
+  const mockFilmId = faker.datatype.uuid();
 
   it('should render correctly', () => {
     const { component } = withProviders(
       <FilmControls>
-        <FilmControls.PlayLink id={mockedFilmId} />
+        <FilmControls.PlayLink id={mockFilmId} />
       </FilmControls>
     );
     render(component);

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../types/routes.ts';
 import VideoPlayer from '../video-player';
 import { useEffect, useRef, useState } from 'react';
+import { FILM_PREVIEW_DELAY } from '../../constants/film.ts';
 
 export default function FilmCard({ id, name, previewImage, previewVideoLink }: FilmPreview) {
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -17,7 +18,7 @@ export default function FilmCard({ id, name, previewImage, previewVideoLink }: F
 
   function handleMouseOver() {
     clearPlayerTimeout();
-    timeoutRef.current = setTimeout(() => setIsHovering(true), 1000);
+    timeoutRef.current = setTimeout(() => setIsHovering(true), FILM_PREVIEW_DELAY);
   }
 
   function handleMouseLeave() {

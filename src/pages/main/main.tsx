@@ -8,7 +8,7 @@ import ShowMoreButton from './show-more-button';
 import RequestSuspense from '../../components/request-suspense';
 import { useEffect } from 'react';
 import { loadPromoFilm } from '../../store/api-actions.ts';
-import { useFavoriteFilms } from '../../hooks/useFavoriteFilms.ts';
+import { useFavoriteFilms } from '../../hooks/use-favorite-films.ts';
 
 export default function Main() {
   const { favoriteFilms } = useFavoriteFilms();

@@ -9,31 +9,31 @@ import Main from './main.tsx';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: Main', () => {
-  const mockedFilteredFilms = mockFilmArray();
-  const mockedUserDetails = mockUserDetails();
-  const mockedGenres = [...new Set(mockedFilteredFilms.map(({genre}) => genre))];
+  const mockFilteredFilms = mockFilmArray();
+  const mockUserData = mockUserDetails();
+  const mockGenres = [...new Set(mockFilteredFilms.map(({genre}) => genre))];
 
   it('should render correctly and load data', async () => {
     const { component, mockStore, mockAxiosAdapter } = withProviders(<Main />, {
       user: {
-        ...mockedUserDetails,
+        ...mockUserData,
         authorizationStatus: AuthorizationStatus.Authorized,
       },
       film: {
-        filmListPortion: mockedFilteredFilms.slice(1),
-        selectedFilm: mockedFilteredFilms[0],
-        filteredFilms: mockedFilteredFilms,
-        filmListLength: mockedFilteredFilms.length - 1,
-        genres: mockedGenres,
-        selectedGenre: mockedGenres[0],
-        favoriteFilms: mockedFilteredFilms,
+        filmListPortion: mockFilteredFilms.slice(1),
+        selectedFilm: mockFilteredFilms[0],
+        filteredFilms: mockFilteredFilms,
+        filmListLength: mockFilteredFilms.length - 1,
+        genres: mockGenres,
+        selectedGenre: mockGenres[0],
+        favoriteFilms: mockFilteredFilms,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedFilteredFilms);
-    mockAxiosAdapter.onGet(/\/promo/).reply(StatusCodes.OK, mockedFilteredFilms[0]);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockFilteredFilms);
+    mockAxiosAdapter.onGet(/\/promo/).reply(StatusCodes.OK, mockFilteredFilms[0]);
     render(component);
-    expect(screen.getByAltText(mockedFilteredFilms[0].name)).toBeInTheDocument();
-    expect(screen.getByText(mockedFilteredFilms[0].name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockFilteredFilms[0].name)).toBeInTheDocument();
+    expect(screen.getByText(mockFilteredFilms[0].name)).toBeInTheDocument();
     expect(screen.getByText(/catalog/i)).toBeInTheDocument();
     await waitFor(() => expect(extractActionsTypes(mockStore.getActions())).toEqual([
       loadPromoFilm.pending.type,

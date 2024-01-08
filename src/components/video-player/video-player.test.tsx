@@ -3,10 +3,10 @@ import VideoPlayer from './index.tsx';
 import { mockPlayerDetails } from '../../utils/mock-data.ts';
 
 describe('Component: VideoPlayer', () => {
-  const mockedPlayerData = mockPlayerDetails();
+  const mockPlayerData = mockPlayerDetails();
 
   it('should render correctly', () => {
-    render(<VideoPlayer {...mockedPlayerData} />);
+    render(<VideoPlayer {...mockPlayerData} />);
     expect(screen.getByTestId('video-player')).toBeInTheDocument();
   });
 });

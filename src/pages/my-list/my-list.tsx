@@ -1,7 +1,7 @@
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 import FilmList from '../../components/film-list';
-import { useFavoriteFilms } from '../../hooks/useFavoriteFilms.ts';
+import { useFavoriteFilms } from '../../hooks/use-favorite-films.ts';
 import RequestSuspense from '../../components/request-suspense';
 
 export default function MyList() {

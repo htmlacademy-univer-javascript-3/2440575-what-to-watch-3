@@ -5,12 +5,12 @@ import { mockFilmArray } from '../../utils/mock-data.ts';
 import { expect } from 'vitest';
 
 describe('Component: FilmList', () => {
-  const mockedFilmArray = mockFilmArray();
+  const mockFilms = mockFilmArray();
 
   it('should display video on hover and image by default', () => {
-    const { component } = withProviders(<FilmList data={mockedFilmArray} />);
+    const { component } = withProviders(<FilmList data={mockFilms} />);
     render(component);
     const articles = screen.getAllByRole('article');
-    expect(articles.length).toBe(mockedFilmArray.length);
+    expect(articles.length).toBe(mockFilms.length);
   });
 });

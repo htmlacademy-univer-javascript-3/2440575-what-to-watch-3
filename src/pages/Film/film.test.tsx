@@ -14,31 +14,31 @@ import Film from './index.tsx';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: Film', () => {
-  const mockedFilteredFilms = mockFilmArray();
-  const mockedReviews = mockReviewArray();
-  const mockedUserDetails = mockUserDetails();
+  const mockFilteredFilms = mockFilmArray();
+  const mockReviews = mockReviewArray();
+  const mockUserData = mockUserDetails();
 
   it('should render correctly and load data', async () => {
     const { component, mockStore, mockAxiosAdapter } = withProviders(<Film />, {
       user: {
-        ...mockedUserDetails,
+        ...mockUserData,
         authorizationStatus: AuthorizationStatus.Authorized,
       },
       film: {
-        suggestionPortion: mockedFilteredFilms.slice(1),
-        selectedFilm: mockedFilteredFilms[0],
-        favoriteFilms: mockedFilteredFilms,
+        suggestionPortion: mockFilteredFilms.slice(1),
+        selectedFilm: mockFilteredFilms[0],
+        favoriteFilms: mockFilteredFilms,
       },
       review: {
-        reviews: mockedReviews,
+        reviews: mockReviews,
       }
     });
-    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockedFilteredFilms);
-    mockAxiosAdapter.onGet(/\/comments/).reply(StatusCodes.OK, mockedReviews);
+    mockAxiosAdapter.onGet(/\/favorite/).reply(StatusCodes.OK, mockFilteredFilms);
+    mockAxiosAdapter.onGet(/\/comments/).reply(StatusCodes.OK, mockReviews);
     mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK);
     render(component);
-    expect(screen.getByAltText(mockedFilteredFilms[0].name)).toBeInTheDocument();
-    expect(screen.getByText(mockedFilteredFilms[0].name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockFilteredFilms[0].name)).toBeInTheDocument();
+    expect(screen.getByText(mockFilteredFilms[0].name)).toBeInTheDocument();
     expect(screen.getByRole('navigation')).toBeInTheDocument();
     expect(screen.getByText(/more like this/i)).toBeInTheDocument();
     await waitFor(() => expect(extractActionsTypes(mockStore.getActions())).toEqual([

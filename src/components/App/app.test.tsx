@@ -10,14 +10,14 @@ import { loadFilms, verifyToken } from '../../store/api-actions.ts';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Application Routing', () => {
-  const mockedFilmDetails = mockFilmDetails();
-  const mockedUserDetails = mockUserDetails();
+  const mockFilmData = mockFilmDetails();
+  const mockUserData = mockUserDetails();
 
   it('should render correctly and load data', async () => {
     const { component, mockHistory, mockStore, mockAxiosAdapter } = withProviders(<App />);
     mockHistory.push(AppRoutes.SignIn);
-    mockAxiosAdapter.onGet(/\/login/).reply(StatusCodes.OK, mockedUserDetails);
-    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK, mockedFilmDetails);
+    mockAxiosAdapter.onGet(/\/login/).reply(StatusCodes.OK, mockUserData);
+    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK, mockFilmData);
 
     render(component);
 
@@ -66,10 +66,10 @@ describe('Application Routing', () => {
       {
         film: {
           ...filmSliceState,
-          selectedFilm: mockedFilmDetails,
+          selectedFilm: mockFilmData,
         },
       });
-    mockHistory.push(AppRoutes.Film.replace(':id', mockedFilmDetails.id));
+    mockHistory.push(AppRoutes.Film.replace(':id', mockFilmData.id));
 
     render(component);
 
@@ -80,13 +80,13 @@ describe('Application Routing', () => {
     const { component, mockHistory } = withProviders(<App />,
       {
         film: {
-          selectedFilm: mockedFilmDetails,
+          selectedFilm: mockFilmData,
         },
         user: {
           authorizationStatus: AuthorizationStatus.Authorized,
         }
       });
-    mockHistory.push(AppRoutes.AddReview.replace(':id', mockedFilmDetails.id));
+    mockHistory.push(AppRoutes.AddReview.replace(':id', mockFilmData.id));
 
     render(component);
 
@@ -97,10 +97,10 @@ describe('Application Routing', () => {
     const { component, mockHistory } = withProviders(<App />,
       {
         film: {
-          selectedFilm: mockedFilmDetails,
+          selectedFilm: mockFilmData,
         },
       });
-    mockHistory.push(AppRoutes.Player.replace(':id', mockedFilmDetails.id));
+    mockHistory.push(AppRoutes.Player.replace(':id', mockFilmData.id));
 
     render(component);
 

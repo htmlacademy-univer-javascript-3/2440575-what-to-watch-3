@@ -11,13 +11,13 @@ import { expect } from 'vitest';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: UserBlock', () => {
-  const mockedUserDetails = mockUserDetails();
+  const mockUserData = mockUserDetails();
 
   it('should display sign in link for guests', async () => {
     const { component, mockHistory } = withProviders(<UserBlock />,
       {
         user: {
-          ...mockedUserDetails,
+          ...mockUserData,
           authorizationStatus: AuthorizationStatus.Unauthorized,
         }
       });
@@ -32,7 +32,7 @@ describe('Component: UserBlock', () => {
     const { component, mockStore, mockAxiosAdapter } = withProviders(<UserBlock />,
       {
         user: {
-          ...mockedUserDetails,
+          ...mockUserData,
           authorizationStatus: AuthorizationStatus.Authorized,
         }
       });
@@ -54,7 +54,7 @@ describe('Component: UserBlock', () => {
     const { component, mockHistory } = withProviders(<UserBlock />,
       {
         user: {
-          ...mockedUserDetails,
+          ...mockUserData,
           authorizationStatus: AuthorizationStatus.Authorized,
         }
       });

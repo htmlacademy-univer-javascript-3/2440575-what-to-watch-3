@@ -8,19 +8,19 @@ import { setSelectedGenre } from '../../../store/film.ts';
 import GenreList from './index.tsx';
 
 describe('Component: GenreList', () => {
-  const mockedFilteredFilms = mockFilmArray();
-  const mockedGenres = [...new Set(mockedFilteredFilms.map(({genre}) => genre))];
+  const mockFilteredFilms = mockFilmArray();
+  const mockGenres = [...new Set(mockFilteredFilms.map(({genre}) => genre))];
 
   it('should render correctly and change genres', async () => {
     const { component, mockStore } = withProviders(<GenreList />, {
       film: {
-        genres: mockedGenres,
-        selectedGenre: mockedGenres[0],
+        genres: mockGenres,
+        selectedGenre: mockGenres[0],
       }
     });
     render(component);
     const items = screen.getAllByRole('listitem');
-    expect(items.length).toBe(mockedGenres.length);
+    expect(items.length).toBe(mockGenres.length);
     await userEvent.click(items[1]);
     const actions = extractActionsTypes(mockStore.getActions());
     expect(actions).toEqual([

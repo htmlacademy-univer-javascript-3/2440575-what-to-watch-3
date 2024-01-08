@@ -8,18 +8,18 @@ import AddReview from './index.tsx';
 import { StatusCodes } from 'http-status-codes';
 
 describe('Component: AddReview', () => {
-  const mockedSelectedFilm = mockFilmDetails();
+  const mockSelectedFilm = mockFilmDetails();
 
   it('should render correctly and load data', async () => {
     const { component, mockStore, mockAxiosAdapter } = withProviders(<AddReview />, {
       film: {
-        selectedFilm: mockedSelectedFilm
+        selectedFilm: mockSelectedFilm
       }
     });
-    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK, mockedSelectedFilm);
+    mockAxiosAdapter.onGet(/\/films/).reply(StatusCodes.OK, mockSelectedFilm);
     render(component);
-    expect(screen.getByAltText(mockedSelectedFilm.name)).toBeInTheDocument();
-    expect(screen.getByAltText(mockedSelectedFilm.name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockSelectedFilm.name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockSelectedFilm.name)).toBeInTheDocument();
     await waitFor(() => expect(extractActionsTypes(mockStore.getActions())).toEqual([
       loadFilmDetails.pending.type,
       loadFilmDetails.fulfilled.type,

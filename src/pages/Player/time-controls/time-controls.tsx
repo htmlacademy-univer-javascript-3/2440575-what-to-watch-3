@@ -12,7 +12,7 @@ export default function TimeControls({ time, duration }: TimeControlsProps) {
         <progress className="player__progress" value={time} max={duration?.toString()}></progress>
         <div className="player__toggler" style={{ left: `${time / duration * 100}%` }}>Toggler</div>
       </div>
-      <div className="player__time-value">{formatPlayerTime(time)}</div>
+      <div className="player__time-value">{formatPlayerTime(time, duration)}</div>
     </div>
   );
 }
