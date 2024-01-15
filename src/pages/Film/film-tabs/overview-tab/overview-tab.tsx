@@ -14,7 +14,7 @@ export default function OverviewTab({
   return (
     <>
       <div className="film-rating">
-        <div className="film-rating__score">{rating}</div>
+        <div className="film-rating__score">{String(parseInt(String(rating), 10).toFixed(1))}</div>
         <p className="film-rating__meta">
           <span className="film-rating__level">{ratingDescription}</span>
           <span className="film-rating__count">{scoresCount} ratings</span>
