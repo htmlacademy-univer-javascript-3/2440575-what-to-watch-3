@@ -2,7 +2,7 @@ import appSliceReducer, { initialState } from './app.ts';
 import * as actions from './api-actions.ts';
 import { addReview, clearRequestCount, setIsFavorite, signIn, verifyToken } from './api-actions.ts';
 
-describe('Slice: App', () => {
+describe('Slice: app', () => {
   const apiActions = Object.values(actions)
     .filter((action) => action.typePrefix !== clearRequestCount.typePrefix && action.typePrefix !== addReview.typePrefix);
 
