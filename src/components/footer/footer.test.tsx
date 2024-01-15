@@ -4,7 +4,7 @@ import Footer from './index.tsx';
 import userEvent from '@testing-library/user-event';
 import { AppRoutes } from '../../types/routes.ts';
 
-describe('Component: Footer', () => {
+describe('Component: footer', () => {
   it('should render correctly', async () => {
     const { component, mockHistory } = withProviders(<Footer />);
     render(component);
