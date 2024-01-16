@@ -38,5 +38,5 @@ export enum RatingDescription {
 export enum PortionSizes {
   FilmList = 8,
   Suggestions = 4,
-  Genres = 10,
+  Genres = 9,
 }
