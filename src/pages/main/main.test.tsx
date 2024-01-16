@@ -4,6 +4,7 @@ import { mockFilmArray, mockUserDetails } from '../../utils/mock-data.ts';
 import { withProviders } from '../../utils/mock-component.tsx';
 import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 import { loadFavoriteFilms, loadPromoFilm } from '../../store/api-actions.ts';
+import { resetFilmListLength } from '../../store/film.ts';
 import { AuthorizationStatus } from '../../types/user.ts';
 import Main from './main.tsx';
 import { StatusCodes } from 'http-status-codes';
@@ -40,6 +41,7 @@ describe('Component: Main', () => {
       loadPromoFilm.fulfilled.type,
       loadFavoriteFilms.pending.type,
       loadFavoriteFilms.fulfilled.type,
+      resetFilmListLength().type
     ]));
   });
 });
