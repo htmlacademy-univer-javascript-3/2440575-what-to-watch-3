@@ -13,7 +13,7 @@ import { AuthorizationStatus } from '../../types/user.ts';
 import Film from './index.tsx';
 import { StatusCodes } from 'http-status-codes';
 
-describe('Component: Film', () => {
+describe('Component: film', () => {
   const mockFilteredFilms = mockFilmArray();
   const mockReviews = mockReviewArray();
   const mockUserData = mockUserDetails();

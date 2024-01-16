@@ -70,7 +70,14 @@ const filmSlice = createSlice({
           filmListPortion: state.filteredFilms.slice(0, newLength)
         }
       );
-    }
+    },
+    resetFilmListLength: (state) => (
+      {
+        ...state,
+        filmListLength: PortionSizes.FilmList,
+        filmListPortion: state.filteredFilms.slice(0, PortionSizes.FilmList)
+      }
+    )
   },
   extraReducers: (builder) => {
     builder.addCase(loadFilms.fulfilled, (state, action: PayloadAction<FilmPreview[]>) => (
@@ -108,5 +115,5 @@ const filmSlice = createSlice({
   },
 });
 
-export const { setSelectedGenre, showMoreFilms } = filmSlice.actions;
+export const { setSelectedGenre, showMoreFilms, resetFilmListLength } = filmSlice.actions;
 export default filmSlice.reducer;

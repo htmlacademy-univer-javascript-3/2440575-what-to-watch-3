@@ -9,7 +9,7 @@ import { extractActionsTypes } from '../../utils/mock-reducer.ts';
 import { loadFilmDetails } from '../../store/api-actions.ts';
 import { StatusCodes } from 'http-status-codes';
 
-describe('Component: Player', () => {
+describe('Component: player', () => {
   const mockSelectedFilm = mockFilmDetails();
   let pauseStub: SpyInstance<[], void>;
   let playStub: SpyInstance<[], Promise<void>>;
