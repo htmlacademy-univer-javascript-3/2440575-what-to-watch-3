@@ -12,7 +12,7 @@ import {
 import { ALL_GENRES } from '../constants/film.ts';
 import { PortionSizes } from '../types/film.ts';
 
-describe('Slice: Film', () => {
+describe('Slice: film', () => {
   const mockFilmList = mockFilmArray();
   const mockFilmDetails = mockFilmList[0];
   const mockGenre = mockFilmDetails.genre;
