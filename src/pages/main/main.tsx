@@ -9,6 +9,7 @@ import RequestSuspense from '../../components/request-suspense';
 import { useEffect } from 'react';
 import { loadPromoFilm } from '../../store/api-actions.ts';
 import { useFavoriteFilms } from '../../hooks/use-favorite-films.ts';
+import { resetFilmListLength } from '../../store/film.ts';
 
 export default function Main() {
   const { favoriteFilms } = useFavoriteFilms();
@@ -17,6 +18,7 @@ export default function Main() {
 
   useEffect(() => {
     dispatch(loadPromoFilm());
+    dispatch(resetFilmListLength());
   }, [dispatch]);
 
   return (
@@ -66,11 +68,8 @@ export default function Main() {
         <div className="page-content">
           <section className="catalog">
             <h2 className="catalog__title visually-hidden">Catalog</h2>
-
             <GenreList />
-
             <FilmList data={filmListPortion} />
-
             <ShowMoreButton />
           </section>
           <Footer />
